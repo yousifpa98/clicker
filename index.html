@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Document</title>
+  </head>
+  <body>
+    <header>
+      <div class="header logo">
+        <h1>CLICKER</h1>
+      </div>
+      <nav class="navbar">
+        <ul>
+          <li><a href="index.html">Home</a></li>
+        </ul>
+      </nav>
+    </header>
+    <main>
+      <section id="game">
+        <div class="click-container">
+          <div class="currentBuds">
+            <p id="buds">0</p>
+            <h2>OZs of Weed</h2>
+            <h4><span id="bps">0</span> OZs per second</h4>
+          </div>
+          <div id="clicker">
+            <img src="./assets/img/click_img.png" alt="bud" />
+          </div>
+        </div>
+        <div class="items"></div>
+        <div class="shop">
+          <h2>Shop</h2>
+          <div class="upgrade-row" id="upgrade-row">
+            <div class="upgrade-info">
+              <div class="info-title">
+                <div class="info-title-left">
+                  <img src="./assets/img/click_img.png" alt="fertilizer" />
+                  <div class="info-title-text">
+                    <h3>Fertilizer</h3>
+                    <div class="upgrade-tag">upgrade</div>
+                  </div>
+                </div>
+                <p class="upgrade-cost"><span id="cost">12341520</span> B.</p>
+              </div>
+              <p id="upgrade-text">Increases Bud production from plants.</p>
+            </div>
+          </div>
+          <div class="buildings">
+            <div class="building-controls">
+              <div class="setting">
+                <label for="setting">buy</label>
+                <input type="radio" name="setting" id="buy" />
+                <label for="setting">sell</label>
+                <input type="radio" name="setting" id="sell" />
+              </div>
+              <div class="amount">
+                <label for="amount">1</label>
+                <input type="radio" name="amount" id="onePer" />
+                <label for="amount">10</label>
+                <input type="radio" name="amount" id="tenPer" />
+                <label for="amount">100</label>
+                <input type="radio" name="amount" id="hundredPer" />
+              </div>
+            </div>
+            <div class="building-shop" id="building-shop"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="script.js"></script>
+  </body>
+</html>

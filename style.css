@@ -1,0 +1,282 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
+header {
+  background-color: green;
+  color: white;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+nav a:hover {
+  text-decoration: underline;
+}
+
+nav ul {
+  display: flex;
+  gap: 1rem;
+  list-style: none;
+}
+
+main {
+  margin-top: 4rem;
+  padding: 1rem;
+}
+
+#game {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100vw;
+  height: calc(100vh-4rem);
+}
+
+.click-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 30%;
+  padding: 2rem;
+}
+
+.currentBuds {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+#buds {
+  font-size: 2.5rem;
+}
+
+#clicker img {
+  width: 233px;
+  height: 233px;
+  object-fit: cover;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 1px solid black;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+#clicker img:hover {
+  transform: scale(1.1);
+}
+
+#clicker img:active {
+  transform: scale(1.05);
+  box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.5);
+}
+
+.items {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 52%;
+  padding: 2rem;
+}
+
+.shop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  width: 16%;
+}
+
+.upgrade-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.2rem;
+  position: relative;
+  width: 100%;
+  border: 1px solid black;
+  padding: 0.2rem;
+}
+
+.upgrade {
+  width: 50px;
+  height: 50px;
+  border: 3px solid black;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upgrade:hover {
+  border-color: green;
+}
+
+.upgrade img {
+  width: 2.2rem;
+  height: 2.2rem;
+  object-fit: cover;
+}
+
+.upgrade-info {
+  display: none;
+  position: absolute;
+  left: calc(-152%);
+  top: 0;
+  background-color: grey;
+  padding: 0.5rem 2rem;
+  width: 450px;
+  max-width: 450px;
+  border: 1px solid black;
+}
+
+.upgrade-info img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border: 1px solid white;
+}
+
+.info-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: bold;
+  gap: 0.5rem;
+}
+
+.info-title-left {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.upgrade-tag {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.1rem 0.3rem;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+#upgrade-text {
+  margin: 0.5rem 0;
+}
+
+.upgrade-cost {
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.buildings {
+  width: 100%;
+}
+
+.building-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid black;
+}
+
+.building-controls input[type="radio"] {
+  display: none;
+}
+
+.building-controls label {
+  cursor: pointer;
+}
+
+.setting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.amount {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+}
+
+.building-shop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.building {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid black;
+  cursor: pointer;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.building:hover {
+  border-color: rgb(0, 128, 0);
+  box-shadow: 0 0 15px 0 rgba(0, 128, 0, 0.5);
+}
+
+.inventory {
+  font-size: 2rem;
+  opacity: 0.65;
+}
+
+.building-left {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+.building img {
+  width: 75px;
+  height: 75px;
+  object-fit: cover;
+}
