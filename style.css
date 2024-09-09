@@ -8,6 +8,14 @@
   font-family: "Roboto", sans-serif;
 }
 
+/* Disable text selection for the entire game */
+* {
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+}
+
 header {
   background-color: green;
   color: white;
@@ -125,6 +133,10 @@ main {
   width: 100%;
   border: 1px solid black;
   padding: 0.2rem;
+  min-height: 58px;
+  background-color: rgb(140, 216, 140);
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.3);
 }
 
 .upgrade {
@@ -135,6 +147,7 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.5);
 }
 
 .upgrade:hover {
@@ -148,7 +161,8 @@ main {
 }
 
 .upgrade-info {
-  display: none;
+  /*   display: none;
+ */
   position: absolute;
   left: calc(-152%);
   top: 0;

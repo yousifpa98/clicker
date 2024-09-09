@@ -5,7 +5,7 @@ const clickerElement = document.getElementById("clicker");
 
 clickerElement.addEventListener("click", () => {
   buds++;
-  budsElement.innerText = buds;
+  budsElement.innerText = Math.floor(buds); // Ensure buds are shown as integers
 });
 
 let budsPerSecond = 0;
@@ -13,18 +13,15 @@ const bpsElement = document.getElementById("bps");
 bpsElement.innerText = budsPerSecond;
 
 const bpsFunction = async () => {
-    const interval = 100; // 100ms interval for smoother growth
-  
-    while (true) {
-      const incrementPerInterval = budsPerSecond / (1000 / interval); // Calculate increment based on updated budsPerSecond
-      buds += incrementPerInterval;
-      budsElement.innerText = Math.floor(buds); // Update the buds display
-      await new Promise((r) => setTimeout(r, interval)); // Wait 100 milliseconds
-    }
-  };
-  
+  const interval = 100; // 100ms interval for smoother growth
 
-
+  while (true) {
+    const incrementPerInterval = budsPerSecond / (1000 / interval); // Calculate increment based on updated budsPerSecond
+    buds += incrementPerInterval;
+    budsElement.innerText = Math.floor(buds); // Display as integer
+    await new Promise((r) => setTimeout(r, interval)); // Wait 100 milliseconds
+  }
+};
 
 const buildings = [
   {
@@ -32,77 +29,90 @@ const buildings = [
     cost: 10,
     bps: 1,
     amount: 0,
+    showAt: 0,
+    shown: false,
   },
   {
     name: "Weed Farm",
     cost: 100,
     bps: 10,
     amount: 0,
+    showAt: 9,
+    shown: false,
   },
   {
     name: "Weed Factory",
     cost: 1000,
     bps: 100,
     amount: 0,
+    showAt: 90,
+    shown: false,
   },
 ];
 
 const buildingShopElement = document.getElementById("building-shop");
 
-const populateBuildingShop = (arr) => {
-  arr.forEach((building) => {
-    // Create the main div element
-    const buildingDiv = document.createElement("div");
-    buildingDiv.classList.add("building");
+// Function to populate buildings based on showAt condition
+const populateBuildingShop = () => {
+  buildingShopElement.innerHTML = ""; // Clear the shop
 
-    // Set the ID (remove spaces and lowercase the building name)
-    buildingDiv.id = building.name.replace(/\s+/g, "");
+  buildings.forEach((building) => {
+    if (building.shown || buds >= building.showAt) {
+      building.shown = true;
 
-    // Create the building-left div
-    const buildingLeftDiv = document.createElement("div");
-    buildingLeftDiv.classList.add("building-left");
+      const buildingDiv = document.createElement("div");
+      buildingDiv.classList.add("building");
 
-    // Create the image element
-    const img = document.createElement("img");
-    img.src = `./assets/img/${building.name.replace(/\s+/g, "")}.png`;
-    img.alt = building.name;
+      buildingDiv.id = building.name.replace(/\s+/g, "");
 
-    // Create the title div and its contents (h3 and cost)
-    const titleDiv = document.createElement("div");
-    titleDiv.classList.add("title");
+      const buildingLeftDiv = document.createElement("div");
+      buildingLeftDiv.classList.add("building-left");
 
-    const h3 = document.createElement("h3");
-    h3.textContent = building.name;
+      const img = document.createElement("img");
+      img.src = `./assets/img/${building.name.replace(/\s+/g, "")}.png`;
+      img.alt = building.name;
 
-    const pCost = document.createElement("p");
-    pCost.id = building.name.replace(/\s+/g, "") + "-cost"; // Unique cost ID
-    pCost.textContent = building.cost;
+      const titleDiv = document.createElement("div");
+      titleDiv.classList.add("title");
 
-    // Append h3 and cost to the title div
-    titleDiv.appendChild(h3);
-    titleDiv.appendChild(pCost);
+      const h3 = document.createElement("h3");
+      h3.textContent = building.name;
 
-    // Append the image and title div to the building-left div
-    buildingLeftDiv.appendChild(img);
-    buildingLeftDiv.appendChild(titleDiv);
+      const pCost = document.createElement("p");
+      pCost.id = building.name.replace(/\s+/g, "") + "-cost";
+      pCost.textContent = building.cost;
 
-    // Create the inventory paragraph
-    const inventoryP = document.createElement("p");
-    inventoryP.id = building.name.replace(/\s+/g, "") + "-inventory"; // Unique inventory ID
-    inventoryP.classList.add("inventory"); // Add inventory class for styling
-    inventoryP.textContent = building.amount;
+      titleDiv.appendChild(h3);
+      titleDiv.appendChild(pCost);
 
-    // Append the building-left div and inventory paragraph to the main building div
-    buildingDiv.appendChild(buildingLeftDiv);
-    buildingDiv.appendChild(inventoryP);
+      buildingLeftDiv.appendChild(img);
+      buildingLeftDiv.appendChild(titleDiv);
 
-    // Finally, append the whole buildingDiv to the building shop element
-    buildingShopElement.appendChild(buildingDiv);
+      const inventoryP = document.createElement("p");
+      inventoryP.id = building.name.replace(/\s+/g, "") + "-inventory";
+      inventoryP.classList.add("inventory");
+      inventoryP.textContent = building.amount;
 
-    // Add the event listener here after creating the element
-    buildingDiv.addEventListener("click", () => {
-      buyBuilding(building); // Pass the current building to the buy function
-    });
+      buildingDiv.appendChild(buildingLeftDiv);
+      buildingDiv.appendChild(inventoryP);
+
+      buildingShopElement.appendChild(buildingDiv);
+
+      // Apply greyscale filter and disable if not enough buds
+      if (buds < building.cost) {
+        buildingDiv.classList.add("disabled"); // Add class for greyscale
+        buildingDiv.style.filter = "grayscale(100%)";
+        buildingDiv.style.pointerEvents = "none"; // Disable click
+      } else {
+        buildingDiv.classList.remove("disabled");
+        buildingDiv.style.filter = "none";
+        buildingDiv.style.pointerEvents = "auto"; // Enable click
+      }
+
+      buildingDiv.addEventListener("click", () => {
+        buyBuilding(building);
+      });
+    }
   });
 };
 
@@ -110,84 +120,181 @@ const updatePrice = (building) => {
   building.cost = Math.floor(building.cost * 1.3);
 };
 
-// Updated buyBuilding logic
 const buyBuilding = (building) => {
   if (buds >= building.cost) {
-    buds -= building.cost; // Deduct the cost
-    budsPerSecond += building.bps; // Increase buds per second
-    bpsElement.innerText = budsPerSecond; // Update buds per second in the DOM
-    building.amount++; // Increment the number of buildings owned
+    buds -= building.cost;
+    budsPerSecond += building.bps;
+    bpsElement.innerText = budsPerSecond;
+    building.amount++;
 
-    // Update the inventory and cost in the DOM
     document.getElementById(
       building.name.replace(/\s+/g, "") + "-inventory"
     ).innerText = building.amount;
-    updatePrice(building); // Update the price
+    updatePrice(building);
     document.getElementById(
       building.name.replace(/\s+/g, "") + "-cost"
     ).innerText = building.cost;
-  } else {
-    alert("Not enough buds!"); // Alert if not enough buds
   }
 };
-
-// Call the function to populate the building shop
-populateBuildingShop(buildings);
 
 const upgrades = [
   {
     name: "Weed Seeds",
     cost: 100,
     multiplier: 2,
+    effects: ["Weed Plant"],
     desc: "Double the production of all Weed Plants",
     owned: false,
+    showAt: () => buildings[0].amount >= 1,
+    shown: false,
   },
   {
     name: "Weed Fertilizer",
     cost: 500,
     multiplier: 2,
+    effects: ["Weed Farm"],
     desc: "Double the production of all Weed Farms",
     owned: false,
+    showAt: () => buildings[1].amount >= 2,
+    shown: false,
   },
   {
     name: "Weed Water",
     cost: 1000,
     multiplier: 2,
+    effects: ["Weed Factory"],
     desc: "Double the production of all Weed Factories",
     owned: false,
+    showAt: () => buildings[2].amount >= 4,
+    shown: false,
   },
+  {
+    name: "Cocaine for the workers",
+    cost: 10000,
+    multiplier: 2,
+    effects: "budsPerSecond",
+    desc: "Increases your overall bud production",
+    owned: false,
+    showAt: 9500,
+    shown: false,
+  }
 ];
+
+let globalBpsMultiplier = 1;
+
+const buyUpgrade = (upgrade) => {
+  if (buds >= upgrade.cost) {
+    buds -= upgrade.cost;
+    budsElement.innerText = Math.floor(buds);
+    upgrade.owned = true;
+
+    if (Array.isArray(upgrade.effects)) {
+      upgrade.effects.forEach((effect) => {
+        const building = buildings.find((b) => b.name === effect);
+        if (building) {
+          building.bps *= upgrade.multiplier;
+        }
+      });
+    } else if (upgrade.effects === "budsPerSecond") {
+      globalBpsMultiplier *= upgrade.multiplier;
+    }
+
+    calculateTotalBps();
+    populateUpgradeRow();
+  }
+};
+
+// Function to calculate the total budsPerSecond from all buildings
+const calculateTotalBps = () => {
+  budsPerSecond = buildings.reduce((totalBps, building) => {
+    return totalBps + building.bps * building.amount;
+  }, 0);
+
+  budsPerSecond *= globalBpsMultiplier;
+  bpsElement.innerText = budsPerSecond;
+};
 
 const upgradeRowElement = document.getElementById("upgrade-row");
 
-const populateUpgradeRow = (arr) => {
-  arr.forEach((upgrade, index) => {
-    // Create the main div element for the upgrade
-    const upgradeDiv = document.createElement("div");
-    upgradeDiv.classList.add("upgrade");
+// Function to populate upgrades based on showAt condition
+const populateUpgradeRow = () => {
+  upgradeRowElement.innerHTML = ""; // Clear existing upgrades
 
-    // Set the ID (use the name, remove spaces and lowercase it)
-    upgradeDiv.id = upgrade.name.replace(/\s+/g, "") + index;
+  upgrades.forEach((upgrade) => {
+    if (upgrade.shown || (typeof upgrade.showAt === "function" ? upgrade.showAt() : buds >= upgrade.showAt)) {
+      upgrade.shown = true;
 
-    // Create the image element
-    const img = document.createElement("img");
-    img.src = `./assets/img/${upgrade.name.replace(/\s+/g, "")}.png`;
-    img.alt = upgrade.name;
+      if (!upgrade.owned) {
+        const upgradeDiv = document.createElement("div");
+        upgradeDiv.classList.add("upgrade");
+        upgradeDiv.id = upgrade.name.replace(/\s+/g, "");
 
-    // Append the image to the upgrade div
-    upgradeDiv.appendChild(img);
+        const img = document.createElement("img");
+        img.src = `./assets/img/${upgrade.name.replace(/\s+/g, "")}.png`;
+        img.alt = upgrade.name;
 
-    // Append the upgrade div to the upgrade row
-    upgradeRowElement.appendChild(upgradeDiv);
+        upgradeDiv.appendChild(img);
+        upgradeRowElement.appendChild(upgradeDiv);
 
-    // Optional: You could also add event listeners to handle clicking on upgrades
-    upgradeDiv.addEventListener("click", () => {
-      console.log(`Upgrade clicked: ${upgrade.name}`);
-      // Handle the purchase logic here
-    });
+        if (buds < upgrade.cost) {
+          upgradeDiv.classList.add("disabled");
+          upgradeDiv.style.filter = "grayscale(100%)";
+          upgradeDiv.style.pointerEvents = "none";
+        } else {
+          upgradeDiv.classList.remove("disabled");
+          upgradeDiv.style.filter = "none";
+          upgradeDiv.style.pointerEvents = "auto";
+        }
+
+        upgradeDiv.addEventListener("click", () => {
+          buyUpgrade(upgrade);
+        });
+      }
+    }
   });
 };
 
-// Call the function to populate the upgrade row
+const shopUpdateLoop = () => {
+  setInterval(() => {
+    populateBuildingShop();
+    populateUpgradeRow();
+  }, 1000); // Update every second to check conditions
+};
+
+// Start the shop update loop
+shopUpdateLoop();
+
+const showUpgradeInfo = (upgrade) => {
+  removeUpgradeInfo();
+
+  const upgradeInfo = document.createElement("div");
+  upgradeInfo.classList.add("upgrade-info");
+
+  upgradeInfo.innerHTML = `
+    <div class="info-title">
+      <div class="info-title-left">
+        <img src="./assets/img/click_img.png" alt="${upgrade.name}" />
+        <div class="info-title-text">
+          <h3>${upgrade.name}</h3>
+          <div class="upgrade-tag">upgrade</div>
+        </div>
+      </div>
+      <p class="upgrade-cost"><span id="cost">${upgrade.cost}</span> B.</p>
+    </div>
+    <p id="upgrade-text">${upgrade.desc}</p>
+  `;
+
+  upgradeRowElement.appendChild(upgradeInfo);
+};
+
+const removeUpgradeInfo = () => {
+  const upgradeInfo = document.querySelector(".upgrade-info");
+  if (upgradeInfo) {
+    upgradeInfo.remove();
+  }
+};
+
+// Populate upgrades initially
 populateUpgradeRow(upgrades);
+
 bpsFunction();
