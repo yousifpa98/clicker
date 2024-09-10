@@ -89,5 +89,15 @@ const upgrades = [
       owned: false,
       showAt: () => buildings[9].amount >= 2,
       shown: false,
+    },
+    {
+      name: "Felix's Special Bowl",
+      cost: 1000000,
+      multiplier: 3,
+      effects: ["Stoner's Den"],
+      desc: "We all have this one friend who brings the good stuff. Felix is that friend.",
+      owned: false,
+      showAt: () => buildings[5].amount >= 10,
+      shown: false,
     }
 ];
