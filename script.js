@@ -24,6 +24,17 @@ const bpsFunction = async () => {
   }
 };
 
+// Reset Game
+
+const resetButton = document.getElementById("resetGame");
+
+const resetGame = () => {
+  localStorage.removeItem("weedClickerSave");
+  location.reload();
+};
+
+resetButton.addEventListener("click", resetGame);
+
 const buildingShopElement = document.getElementById("building-shop");
 
 // Function to save the current game state to localStorage
@@ -74,8 +85,9 @@ const loadGame = () => {
   }
 };
 
+
 const updatePrice = (building) => {
-  building.cost = Math.floor(building.cost * 1.3);
+  building.cost = Math.floor(building.cost * 1.1);
 };
 
 const buyBuilding = (building) => {

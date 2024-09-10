@@ -52,6 +52,21 @@ nav ul {
   list-style: none;
 }
 
+.btn {
+  background-color: orange;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn:hover {
+  background-color: rgba(255, 166, 0, 0.555);
+  text-decoration: none;
+}
+
 main {
   margin-top: 4rem;
   padding: 1rem;
