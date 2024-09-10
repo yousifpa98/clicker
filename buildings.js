@@ -79,5 +79,13 @@ const buildings = [
       amount: 0,
       showAt: 200000,
       shown: false,
+    },
+    {
+      name: "Narco Routes",
+      cost: 500000,
+      bps: 2500,
+      amount: 0,
+      showAt: 400000,
+      shown: false,
     }
 ];

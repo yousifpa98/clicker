@@ -99,5 +99,15 @@ const upgrades = [
       owned: false,
       showAt: () => buildings[5].amount >= 10,
       shown: false,
+    },
+    {
+      name: "Guerilla Support",
+      cost: 500000,
+      multiplier: 1.15,
+      effects: ["Narco Routes"],
+      desc: "Local guerilla groups help you transport your product faster and safer.",
+      owned: false,
+      showAt: () => buildings[10].amount >= 1,
+      shown: false,
     }
 ];
