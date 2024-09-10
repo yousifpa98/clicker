@@ -2,6 +2,10 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  user-select: none;
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
 }
 
 @font-face {
@@ -23,6 +27,10 @@
   --transition: 0.3s ease;
 
   font-family: "Roboto", sans-serif;
+}
+
+main {
+  height: 100vh;
 }
 
 .desktop {
@@ -201,6 +209,7 @@ header {
   padding: 0.5rem;
   position: relative;
   width: 100%;
+  max-width: 351px;
   border: 1px solid black;
   min-height: 58px;
   background-color: var(--primary-color);
@@ -233,7 +242,6 @@ header {
 
 .buildings {
   width: 100%;
-
 }
 
 .building-controls {
@@ -272,13 +280,14 @@ header {
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  height: 60vh;
+  height: 55vh;
   gap: 1rem;
   overflow-y: scroll;
   border: 2px solid black;
   padding: 1rem;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
   min-width: 350px;
+  max-width: 360px;
 }
 
 .building {
@@ -470,4 +479,8 @@ footer p {
     font-size: 0.8rem;
     font-weight: bold;
   }
+
+/*   .upgrade-row, .building-shop {
+    width: 350px;
+  } */
 }
