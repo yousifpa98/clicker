@@ -230,14 +230,57 @@ const populateUpgradeRow = () => {
           upgradeDiv.style.filter = "none";
         }
 
+        // Click event is only active when affordable
         upgradeDiv.addEventListener("click", () => {
           if (buds >= upgrade.cost) {
             buyUpgrade(upgrade);
           }
         });
+
+        // Add hover event listeners for showing and removing upgrade info
+        upgradeDiv.addEventListener("mouseover", () => {
+          showUpgradeInfo(upgrade);
+        });
+
+        upgradeDiv.addEventListener("mouseout", () => {
+          removeUpgradeInfo();
+        });
       }
     }
   });
+};
+
+// Function to show upgrade information on hover
+const showUpgradeInfo = (upgrade) => {
+  removeUpgradeInfo(); // Clear any existing info
+
+  const upgradeInfo = document.createElement("div");
+  upgradeInfo.classList.add("upgrade-info");
+
+  upgradeInfo.innerHTML = `
+    <div class="info-title">
+      <div class="info-title-left">
+        <img src="./assets/img/${upgrade.name.replace(/\s+/g, "")}.png" alt="${upgrade.name}" />
+        <div class="info-title-text">
+          <h3>${upgrade.name}</h3>
+          <div class="upgrade-tag">upgrade</div>
+        </div>
+      </div>
+      <p class="upgrade-cost"><span id="cost">${upgrade.cost}</span> B.</p>
+    </div>
+    <p id="upgrade-text">${upgrade.desc}</p>
+  `;
+
+  upgradeRowElement.appendChild(upgradeInfo);
+};
+
+
+// Function to remove the upgrade information when hover ends
+const removeUpgradeInfo = () => {
+  const upgradeInfo = document.querySelector(".upgrade-info");
+  if (upgradeInfo) {
+    upgradeInfo.remove();
+  }
 };
 
 const shopUpdateLoop = () => {
