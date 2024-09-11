@@ -32,11 +32,17 @@ if (!leafContainer) {
     }, fallDuration * 1000);
   };
 
-  // Generate leaves based on budsPerSecond
+  // Generate leaves based on budsPerSecond with a cap and scaling
   const generateLeavesBasedOnBPS = () => {
-    const leafInterval = Math.max(100, 1000 / (budsPerSecond + 1)); // Prevent interval from being too small
+    // Cap the max number of leaves per interval (e.g., 50 leaves max)
+    const maxLeaves = 50;
+
+    // Use a logarithmic or root scale to slow down leaf generation as bps increases
+    const leafInterval = Math.max(100, 1000 / (Math.log(budsPerSecond + 1) + 1)); // Adjust interval based on log scale
     setInterval(() => {
-      const leavesToGenerate = Math.max(1, Math.floor(budsPerSecond / 10)); // Control leaf generation based on BPS
+      // Generate a reasonable number of leaves based on the bps, but cap it
+      const leavesToGenerate = Math.min(maxLeaves, Math.floor(Math.sqrt(budsPerSecond) / 10)); // Scaled by square root
+
       console.log(`Generating ${leavesToGenerate} leaves`);
       for (let i = 0; i < leavesToGenerate; i++) {
         createFallingLeaf();
