@@ -28,7 +28,7 @@ In Weed Clicker, your goal is to become the biggest weed mogul by collecting bud
 
 ## Gameplay
 
-To get started, click on the large **weed leave** image to collect your first few buds. Once you have enough, you can use them to buy buildings that generate buds passively. As you accumulate more buds, new buildings and upgrades become available in the shop.
+To get started, click on the large **weed leaf** image to collect your first few buds. Once you have enough, you can use them to buy buildings that generate buds passively. As you accumulate more buds, new buildings and upgrades become available in the shop.
 
 ### Interface:
 
@@ -83,6 +83,10 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 (For a full list of upgrades, see the [upgrades.js file](./upgrades.js))
 
 ## Changelog
+
+### Version 0.0.5
+- favicon + Tab Bud indicator
+- background animation and minor cosmetic fixes
 
 ### Version 0.0.4
 - Fixed bud incrementation when tab is inactive

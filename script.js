@@ -1,4 +1,4 @@
-const version = "0.0.4";
+const version = "0.0.5";
 const versionElements = document.querySelectorAll(".ver span");
 
 versionElements.forEach(element => {
