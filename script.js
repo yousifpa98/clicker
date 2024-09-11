@@ -1,4 +1,4 @@
-const version = "0.0.6";
+const version = "0.1.0";
 const versionElements = document.querySelectorAll(".ver span");
 
 versionElements.forEach((element) => {
@@ -205,14 +205,17 @@ let globalBpsMultiplier = 1;
 const buyUpgrade = (upgrade) => {
   if (buds >= upgrade.cost) {
     buds -= upgrade.cost;
-    budsElement.innerText = Math.floor(buds).toLocaleString(); // Format buds with thousands separator
+    budsElement.innerText = Math.floor(buds).toLocaleString(); // Update the buds counter
     upgrade.owned = true;
 
-    if (Array.isArray(upgrade.effects)) {
+    // Check if the upgrade affects budsPerClick
+    if (upgrade.effects === "budsPerClick") {
+      budsPerClick *= upgrade.multiplier; // Apply the multiplier to budsPerClick
+    } else if (Array.isArray(upgrade.effects)) {
       upgrade.effects.forEach((effect) => {
         const building = buildings.find((b) => b.name === effect);
         if (building) {
-          building.bps *= upgrade.multiplier;
+          building.bps *= upgrade.multiplier; // Apply the multiplier to building's bps
         }
       });
     } else if (upgrade.effects === "budsPerSecond") {
@@ -224,6 +227,7 @@ const buyUpgrade = (upgrade) => {
     saveGame(); // Save the game after each upgrade
   }
 };
+
 
 // Function to calculate the total budsPerSecond from all buildings
 const calculateTotalBps = () => {

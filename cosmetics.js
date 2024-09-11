@@ -58,3 +58,31 @@ if (!leafContainer) {
   // Start leaf generation when game starts
   generateLeavesBasedOnBPS();
 }
+
+// Function to create a floating buds animation at the mouse click position
+const createFloatingBuds = (x, y, budsPerClick) => {
+  const floatingText = document.createElement("div");
+  floatingText.classList.add("buds-animation");
+  floatingText.textContent = `+ ${budsPerClick} Bud${budsPerClick > 1 ? "s" : ""}`;
+
+  // Set the position of the floating text
+  floatingText.style.left = `${x}px`;
+  floatingText.style.top = `${y}px`;
+
+  document.body.appendChild(floatingText);
+
+  // Remove the floating text after the animation completes
+  setTimeout(() => {
+    floatingText.remove();
+  }, 1000); // Matches the animation duration (1s)
+};
+
+// Listen for clicks on the clicker element and trigger the animation
+clickerElement.addEventListener("click", (e) => {
+  // Get mouse position relative to the viewport
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
+
+  // Trigger the floating buds animation
+  createFloatingBuds(mouseX, mouseY, budsPerClick);
+});

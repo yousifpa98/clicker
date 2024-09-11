@@ -84,6 +84,11 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ## Changelog
 
+### Version 0.1.0
+- Stats
+- Click Animations
+- 7 New Upgrades for Clickmultiplier
+
 ### Version 0.0.6
 - added Stats
    - tracking and displaying various stats
