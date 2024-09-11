@@ -1,4 +1,4 @@
-const version = "0.1.0";
+const version = "0.1.1";
 const versionElements = document.querySelectorAll(".ver span");
 
 versionElements.forEach((element) => {
@@ -94,14 +94,44 @@ const bpsFunction = async () => {
 
 // Reset Game
 
-const resetButton = document.getElementById("resetGame");
+const resetButtons = document.querySelectorAll(".resetGame");
+const modal = document.getElementById("resetModal");
+const confirmResetBtn = document.getElementById("confirmReset");
+const cancelResetBtn = document.getElementById("cancelReset");
 
-const resetGame = () => {
-  localStorage.removeItem("weedClickerSave");
-  location.reload();
-};
+let resetGameTarget = null; // To track which reset button was clicked
 
-resetButton.addEventListener("click", resetGame);
+// Loop through each reset button and add an event listener
+resetButtons.forEach((resetButton) => {
+  resetButton.addEventListener("click", (e) => {
+    e.preventDefault(); // Prevent default action for link buttons
+    resetGameTarget = resetButton; // Store which reset button was clicked
+    modal.style.display = "block"; // Show the modal
+  });
+});
+
+// Reset game if confirmed
+confirmResetBtn.addEventListener("click", () => {
+  if (resetGameTarget) {
+    localStorage.removeItem("weedClickerSave");
+    location.reload(); // Reload the page to reset the game
+  }
+});
+
+// Close modal if cancel is clicked
+cancelResetBtn.addEventListener("click", () => {
+  modal.style.display = "none"; // Hide the modal
+  resetGameTarget = null; // Clear the target reset button
+});
+
+// Close modal if clicked outside of it
+window.addEventListener("click", (event) => {
+  if (event.target == modal) {
+    modal.style.display = "none"; // Hide the modal
+    resetGameTarget = null; // Clear the target reset button
+  }
+});
+
 
 const buildingShopElement = document.getElementById("building-shop");
 
