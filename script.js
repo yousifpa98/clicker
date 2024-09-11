@@ -1,4 +1,4 @@
-const version = "0.0.2";
+const version = "0.0.4";
 const versionElements = document.querySelectorAll(".ver span");
 
 versionElements.forEach(element => {
@@ -17,23 +17,30 @@ const clickerElement = document.getElementById("clicker");
 
 clickerElement.addEventListener("click", () => {
   buds++;
-  budsElement.innerText = Math.floor(buds); // Ensure buds are shown as integers
+  budsElement.innerText = Math.floor(buds).toLocaleString(); // Ensure buds are shown as integers and formatted with thousands separator
 });
 
 let budsPerSecond = 0;
 const bpsElement = document.getElementById("bps");
-bpsElement.innerText = budsPerSecond;
+bpsElement.innerText = budsPerSecond.toFixed(2); // Ensure budsPerSecond is shown with 2 decimal places
+
+let lastTimestamp = Date.now();
 
 const bpsFunction = async () => {
   const interval = 100; // 100ms interval for smoother growth
 
   while (true) {
-    const incrementPerInterval = budsPerSecond / (1000 / interval); // Calculate increment based on updated budsPerSecond
+    const currentTime = Date.now();
+    const deltaTime = (currentTime - lastTimestamp) / 1000; // Get time elapsed in seconds
+    lastTimestamp = currentTime;
+
+    const incrementPerInterval = (budsPerSecond * deltaTime); // Calculate increment based on time passed
     buds += incrementPerInterval;
-    budsElement.innerText = Math.floor(buds); // Display as integer
+    budsElement.innerText = Math.floor(buds).toLocaleString(); // Display as integer and formatted with thousands separator
     await new Promise((r) => setTimeout(r, interval)); // Wait 100 milliseconds
   }
 };
+
 
 // Reset Game
 
@@ -89,13 +96,12 @@ const loadGame = () => {
     }
 
     // Update the UI to reflect the loaded state
-    budsElement.innerText = Math.floor(buds);
-    bpsElement.innerText = budsPerSecond;
+    budsElement.innerText = Math.floor(buds).toLocaleString(); // Format buds with thousands separator
+    bpsElement.innerText = budsPerSecond.toFixed(2); // Format budsPerSecond with 2 decimal places
     populateBuildingShop();
     populateUpgradeRow();
   }
 };
-
 
 const updatePrice = (building) => {
   building.cost = Math.floor(building.cost * 1.1);
@@ -105,7 +111,7 @@ const buyBuilding = (building) => {
   if (buds >= building.cost) {
     buds -= building.cost;
     budsPerSecond += building.bps;
-    bpsElement.innerText = budsPerSecond;
+    bpsElement.innerText = budsPerSecond.toFixed(2); // Update budsPerSecond with 2 decimal places
     building.amount++;
 
     document.getElementById(
@@ -114,7 +120,7 @@ const buyBuilding = (building) => {
     updatePrice(building);
     document.getElementById(
       building.name.replace(/\s+/g, "") + "-cost"
-    ).innerText = building.cost;
+    ).innerText = building.cost.toLocaleString(); // Format cost with thousands separator
 
     saveGame(); // Save the game after each purchase
   }
@@ -125,7 +131,7 @@ let globalBpsMultiplier = 1;
 const buyUpgrade = (upgrade) => {
   if (buds >= upgrade.cost) {
     buds -= upgrade.cost;
-    budsElement.innerText = Math.floor(buds);
+    budsElement.innerText = Math.floor(buds).toLocaleString(); // Format buds with thousands separator
     upgrade.owned = true;
 
     if (Array.isArray(upgrade.effects)) {
@@ -152,7 +158,7 @@ const calculateTotalBps = () => {
   }, 0);
 
   budsPerSecond *= globalBpsMultiplier;
-  bpsElement.innerText = budsPerSecond;
+  bpsElement.innerText = budsPerSecond.toFixed(2); // Ensure budsPerSecond is displayed with 2 decimal places
 };
 
 const upgradeRowElement = document.getElementById("upgrade-row");
@@ -185,7 +191,7 @@ const populateBuildingShop = () => {
 
       const pCost = document.createElement("p");
       pCost.id = building.name.replace(/\s+/g, "") + "-cost";
-      pCost.textContent = building.cost;
+      pCost.textContent = building.cost.toLocaleString(); // Format cost with thousands separator
 
       titleDiv.appendChild(h3);
       titleDiv.appendChild(pCost);
@@ -289,7 +295,7 @@ const showUpgradeInfo = (upgrade) => {
           <div class="upgrade-tag">upgrade</div>
         </div>
       </div>
-      <p class="upgrade-cost"><span id="cost">${upgrade.cost}</span> B.</p>
+      <p class="upgrade-cost"><span id="cost">${upgrade.cost.toLocaleString()}</span> B.</p> <!-- Format upgrade cost with thousands separator -->
     </div>
     <p id="upgrade-text">${upgrade.desc}</p>
   `;

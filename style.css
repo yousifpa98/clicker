@@ -29,6 +29,10 @@
   font-family: "Roboto", sans-serif;
 }
 
+main {
+  background-color: var(--main-color);
+}
+
 .desktop {
   display: none;
 }
