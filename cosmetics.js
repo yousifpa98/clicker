@@ -21,7 +21,7 @@ if (!leafContainer) {
     const leaf = document.createElement("div");
     leaf.classList.add("leaf");
     leaf.style.left = `${Math.random() * 100}vw`; // Random position
-    const fallDuration = Math.random() * 2 + 3; // Random fall duration between 3 to 5 seconds
+    const fallDuration = /* Math.random() * 2 + 3 */15; // fixed fall duration between 3 to 5 seconds
     leaf.style.animationDuration = `${fallDuration}s`;
 
     leafContainer.appendChild(leaf);

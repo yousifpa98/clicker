@@ -477,7 +477,7 @@ footer p {
   background-image: url("./assets/img/click_img.png");
   background-size: contain;
   background-repeat: no-repeat;
-  animation: fall 1s linear forwards, fadeOut 2s forwards;
+  animation: fall linear forwards, fadeOut 2s forwards;
 }
 
 @keyframes fall {
