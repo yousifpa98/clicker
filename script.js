@@ -52,6 +52,9 @@ clickerElement.addEventListener("click", () => {
   stats.miscStats.budsFromClicks += budsPerClick;
   budsElement.innerText = Math.floor(buds).toLocaleString();
   updateDocumentTitle();
+
+  // Sync budsPerClick with stats
+  stats.basicStats.currBudsPerClick = budsPerClick;
 });
 
 const calculateClicksPerSecond = () => {
@@ -107,6 +110,7 @@ const saveGame = () => {
   const gameData = {
     buds: buds,
     budsPerSecond: budsPerSecond,
+    budsPerClick: budsPerClick, // Save budsPerClick
     buildings: buildings,
     upgrades: upgrades,
     stats: stats, // Include totalPlaytime
@@ -126,11 +130,12 @@ const loadGame = () => {
     // Restore basic stats
     buds = gameData.buds || 0;
     budsPerSecond = gameData.budsPerSecond || 0;
+    budsPerClick = gameData.budsPerClick || 1; // Restore budsPerClick
+    stats.basicStats.currBudsPerClick = budsPerClick; // Sync currBudsPerClick
+
     stats.basicStats.allTimeBuds = gameData.stats?.basicStats?.allTimeBuds || 0;
     stats.basicStats.allTimeClicks =
       gameData.stats?.basicStats?.allTimeClicks || 0;
-    stats.basicStats.currBudsPerClick =
-      gameData.stats?.basicStats?.currBudsPerClick || 1;
 
     // Restore building stats
     if (gameData.buildings) {
@@ -173,6 +178,9 @@ const loadGame = () => {
     // Populate the building shop and upgrade rows with the restored data
     populateBuildingShop();
     populateUpgradeRow();
+
+    // Ensure stats are updated correctly
+    updateStats();
   }
 };
 
@@ -211,6 +219,7 @@ const buyUpgrade = (upgrade) => {
     // Check if the upgrade affects budsPerClick
     if (upgrade.effects === "budsPerClick") {
       budsPerClick *= upgrade.multiplier; // Apply the multiplier to budsPerClick
+      stats.basicStats.currBudsPerClick = budsPerClick; // Sync with stats
     } else if (Array.isArray(upgrade.effects)) {
       upgrade.effects.forEach((effect) => {
         const building = buildings.find((b) => b.name === effect);
