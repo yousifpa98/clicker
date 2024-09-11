@@ -13,11 +13,17 @@ console.log(versionElements);
 let buds = 0;
 const budsElement = document.getElementById("buds");
 
+// Update the document title with the current number of buds
+const updateDocumentTitle = () => {
+  document.title = `${Math.floor(buds).toLocaleString()} buds | Weed Clicker`;
+};
+
 const clickerElement = document.getElementById("clicker");
 
 clickerElement.addEventListener("click", () => {
   buds++;
   budsElement.innerText = Math.floor(buds).toLocaleString(); // Ensure buds are shown as integers and formatted with thousands separator
+  updateDocumentTitle();
 });
 
 let budsPerSecond = 0;
@@ -37,9 +43,11 @@ const bpsFunction = async () => {
     const incrementPerInterval = (budsPerSecond * deltaTime); // Calculate increment based on time passed
     buds += incrementPerInterval;
     budsElement.innerText = Math.floor(buds).toLocaleString(); // Display as integer and formatted with thousands separator
+    updateDocumentTitle(); // Call this function to update the title with the new buds count
     await new Promise((r) => setTimeout(r, interval)); // Wait 100 milliseconds
   }
 };
+
 
 
 // Reset Game
