@@ -1,3 +1,14 @@
+const version = "0.0.2";
+const versionElements = document.querySelectorAll(".ver span");
+
+versionElements.forEach(element => {
+  element.innerText = version;
+});
+
+console.log(`Running Weed Clicker version ${version}`);
+console.log("Welcome to the Weed Clicker console!");
+console.log(versionElements);
+
 
 let buds = 0;
 const budsElement = document.getElementById("buds");
