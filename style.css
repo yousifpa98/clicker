@@ -29,10 +29,6 @@
   font-family: "Roboto", sans-serif;
 }
 
-main {
-  height: 100vh;
-}
-
 .desktop {
   display: none;
 }
@@ -409,6 +405,10 @@ footer p {
 }
 
 @media screen and (min-width: 1024px) {
+  main {
+    height: 100vh;
+  }
+
   #game {
     flex-direction: row;
     height: fit-content;
@@ -481,7 +481,7 @@ footer p {
     font-weight: bold;
   }
 
-/*   .upgrade-row, .building-shop {
+  /*   .upgrade-row, .building-shop {
     width: 350px;
   } */
 }
