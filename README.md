@@ -84,6 +84,10 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ## Changelog
 
+### Version 0.0.6
+- added Stats
+   - tracking and displaying various stats
+
 ### Version 0.0.5
 - favicon + Tab Bud indicator
 - background animation and minor cosmetic fixes

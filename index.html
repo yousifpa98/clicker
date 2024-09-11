@@ -97,6 +97,102 @@
             <div class="building-shop" id="building-shop"></div>
           </div>
         </div>
+        <div class="stats-container">
+          <h2>Stats</h2>
+          <div id="basicStats">
+            <h3>Basic Stats</h3>
+            <table class="stats-table">
+              <tr>
+                <td>Total Buds Harvested:</td>
+                <td id="totalBuds">0</td>
+              </tr>
+              <tr>
+                <td>Total Clicks:</td>
+                <td id="totalClicks">0</td>
+              </tr>
+              <tr>
+                <td>Current Buds Per Second:</td>
+                <td id="currentBps">0</td>
+              </tr>
+              <tr>
+                <td>Current Buds per Click:</td>
+                <td id="currentBpc">1</td>
+              </tr>
+            </table>
+          </div>
+          <div id="buildingStats">
+            <h3>Building Stats</h3>
+            <table class="stats-table">
+              <tr>
+                <td>Building Styles Owned:</td>
+                <td id="totalBuildingsOwned">0</td>
+              </tr>
+              <tr>
+                <td>Most Popular Building:</td>
+                <td id="mostPopularBuilding">None</td>
+              </tr>
+            </table>
+          </div>
+          <div id="upgradeStats">
+            <h3>Upgrade Stats</h3>
+            <table class="stats-table">
+              <tr>
+                <td>Upgrades Acquired:</td>
+                <td id="totalUpgradesAcquired">0</td>
+              </tr>
+              <tr>
+                <td>Best Upgrade:</td>
+                <td id="bestUpgrade">None</td>
+              </tr>
+            </table>
+          </div>
+          <div id="miscStats">
+            <h3>Miscellaneous Stats</h3>
+            <table class="stats-table">
+              <tr>
+                <td>Total Playtime:</td>
+                <td id="totalPlaytime">0</td>
+              </tr>
+              <tr>
+                <td>Total Buds from Buildings:</td>
+                <td id="totalBudsFromBuildings">0</td>
+              </tr>
+              <tr>
+                <td>Buds Earned by Clicking:</td>
+                <td id="budsByClicking">0</td>
+              </tr>
+              <tr>
+                <td>Total Buildings Bought:</td>
+                <td id="totalBuildingsBought">0</td>
+              </tr>
+              <tr>
+                <td>Clicks per Second:</td>
+                <td id="clicksPerSecond">0</td>
+              </tr>
+             <!--  <tr>
+                <td>Favorite Click Booster:</td>
+                <td id="favoriteClickBooster">None</td>
+              </tr> -->
+            </table>
+          </div>
+          <div id="funStats">
+            <h3>Fun Stats</h3>
+            <table class="stats-table">
+              <tr>
+                <td>Total Buds Smoked:</td>
+                <td id="totalBudsSmoked">0</td>
+              </tr>
+              <tr>
+                <td>Times Stoned:</td>
+                <td id="timesStoned">0</td>
+              </tr>
+              <tr>
+                <td>Total Revenue Generated:</td>
+                <td id="totalRevenueGenerated">$0</td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </section>
       <div id="leaf-container"></div>
     </main>
@@ -111,11 +207,11 @@
           ></a>
         </li>
       </ul>
-      
     </footer>
     <script src="./buildings.js"></script>
     <script src="./upgrades.js"></script>
     <script src="./script.js"></script>
+    <!-- <script src="./stats.js"></script> -->
     <script src="./cosmetics.js"></script>
   </body>
 </html>

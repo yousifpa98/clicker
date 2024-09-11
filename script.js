@@ -1,14 +1,25 @@
-const version = "0.0.5";
+const version = "0.0.6";
 const versionElements = document.querySelectorAll(".ver span");
 
-versionElements.forEach(element => {
+versionElements.forEach((element) => {
   element.innerText = version;
 });
 
 console.log(`Running Weed Clicker version ${version}`);
 console.log("Welcome to the Weed Clicker console!");
-console.log(versionElements);
 
+const playtimeFunction = () => {
+  setInterval(() => {
+    stats.miscStats.totalPlaytime += 1; // Increment by 1 second
+  }, 1000); // Every second
+};
+
+const formatPlaytime = (seconds) => {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+  return `${hours}h ${minutes}m ${secs}s`;
+};
 
 let buds = 0;
 const budsElement = document.getElementById("buds");
@@ -20,11 +31,38 @@ const updateDocumentTitle = () => {
 
 const clickerElement = document.getElementById("clicker");
 
+let budsPerClick = 1;
+let clickTimestamps = [];
+
 clickerElement.addEventListener("click", () => {
-  buds++;
-  budsElement.innerText = Math.floor(buds).toLocaleString(); // Ensure buds are shown as integers and formatted with thousands separator
+  const now = Date.now();
+
+  // Add current timestamp
+  clickTimestamps.push(now);
+
+  // Remove timestamps older than 60 seconds
+  clickTimestamps = clickTimestamps.filter(
+    (timestamp) => now - timestamp <= 60000
+  );
+
+  // Increment buds and other stats
+  buds += budsPerClick;
+  stats.basicStats.allTimeBuds += budsPerClick;
+  stats.basicStats.allTimeClicks++;
+  stats.miscStats.budsFromClicks += budsPerClick;
+  budsElement.innerText = Math.floor(buds).toLocaleString();
   updateDocumentTitle();
 });
+
+const calculateClicksPerSecond = () => {
+  const now = Date.now();
+  // Filter out timestamps older than 60 seconds
+  clickTimestamps = clickTimestamps.filter(
+    (timestamp) => now - timestamp <= 60000
+  );
+  // Calculate clicks per second
+  return (clickTimestamps.length / 60).toFixed(2);
+};
 
 let budsPerSecond = 0;
 const bpsElement = document.getElementById("bps");
@@ -40,15 +78,16 @@ const bpsFunction = async () => {
     const deltaTime = (currentTime - lastTimestamp) / 1000; // Get time elapsed in seconds
     lastTimestamp = currentTime;
 
-    const incrementPerInterval = (budsPerSecond * deltaTime); // Calculate increment based on time passed
+    const incrementPerInterval = budsPerSecond * deltaTime; // Calculate increment based on time passed
     buds += incrementPerInterval;
+    stats.basicStats.allTimeBuds += incrementPerInterval;
+    stats.miscStats.totalBudsFromBuildings += incrementPerInterval; // Track buds from buildings
+
     budsElement.innerText = Math.floor(buds).toLocaleString(); // Display as integer and formatted with thousands separator
     updateDocumentTitle(); // Call this function to update the title with the new buds count
     await new Promise((r) => setTimeout(r, interval)); // Wait 100 milliseconds
   }
 };
-
-
 
 // Reset Game
 
@@ -70,6 +109,7 @@ const saveGame = () => {
     budsPerSecond: budsPerSecond,
     buildings: buildings,
     upgrades: upgrades,
+    stats: stats, // Include totalPlaytime
   };
   localStorage.setItem("weedClickerSave", JSON.stringify(gameData));
 };
@@ -77,16 +117,22 @@ const saveGame = () => {
 // Save the game every 30 seconds
 setInterval(saveGame, 30000);
 
-// Function to load the game state from localStorage
 const loadGame = () => {
   const savedGame = localStorage.getItem("weedClickerSave");
 
   if (savedGame) {
     const gameData = JSON.parse(savedGame);
+
+    // Restore basic stats
     buds = gameData.buds || 0;
     budsPerSecond = gameData.budsPerSecond || 0;
+    stats.basicStats.allTimeBuds = gameData.stats?.basicStats?.allTimeBuds || 0;
+    stats.basicStats.allTimeClicks =
+      gameData.stats?.basicStats?.allTimeClicks || 0;
+    stats.basicStats.currBudsPerClick =
+      gameData.stats?.basicStats?.currBudsPerClick || 1;
 
-    // Restore building progress
+    // Restore building stats
     if (gameData.buildings) {
       gameData.buildings.forEach((savedBuilding, index) => {
         buildings[index].amount = savedBuilding.amount;
@@ -95,7 +141,7 @@ const loadGame = () => {
       });
     }
 
-    // Restore upgrade progress
+    // Restore upgrade stats
     if (gameData.upgrades) {
       gameData.upgrades.forEach((savedUpgrade, index) => {
         upgrades[index].owned = savedUpgrade.owned;
@@ -103,9 +149,28 @@ const loadGame = () => {
       });
     }
 
+    // Restore misc stats
+    stats.miscStats.totalPlaytime =
+      gameData.stats?.miscStats?.totalPlaytime || 0;
+    stats.miscStats.totalBudsFromBuildings =
+      gameData.stats?.miscStats?.totalBudsFromBuildings || 0;
+    stats.miscStats.budsFromClicks =
+      gameData.stats?.miscStats?.budsFromClicks || 0;
+    stats.miscStats.totalBuildingsBought =
+      gameData.stats?.miscStats?.totalBuildingsBought || 0;
+    stats.miscStats.clicksPerSecond =
+      gameData.stats?.miscStats?.clicksPerSecond || 0;
+
+    // Restore fun stats
+    stats.funStats.totalBudsSmoked =
+      gameData.stats?.funStats?.totalBudsSmoked || 0;
+    stats.funStats.timesStoned = gameData.stats?.funStats?.timesStoned || "";
+
     // Update the UI to reflect the loaded state
     budsElement.innerText = Math.floor(buds).toLocaleString(); // Format buds with thousands separator
     bpsElement.innerText = budsPerSecond.toFixed(2); // Format budsPerSecond with 2 decimal places
+
+    // Populate the building shop and upgrade rows with the restored data
     populateBuildingShop();
     populateUpgradeRow();
   }
@@ -121,6 +186,7 @@ const buyBuilding = (building) => {
     budsPerSecond += building.bps;
     bpsElement.innerText = budsPerSecond.toFixed(2); // Update budsPerSecond with 2 decimal places
     building.amount++;
+    stats.funStats.totalBudsSmoked += building.cost;
 
     document.getElementById(
       building.name.replace(/\s+/g, "") + "-inventory"
@@ -297,7 +363,9 @@ const showUpgradeInfo = (upgrade) => {
   upgradeInfo.innerHTML = `
     <div class="info-title">
       <div class="info-title-left">
-        <img src="./assets/img/${upgrade.name.replace(/\s+/g, "")}.png" alt="${upgrade.name}" />
+        <img src="./assets/img/${upgrade.name.replace(/\s+/g, "")}.png" alt="${
+    upgrade.name
+  }" />
         <div class="info-title-text">
           <h3>${upgrade.name}</h3>
           <div class="upgrade-tag">upgrade</div>
@@ -311,7 +379,6 @@ const showUpgradeInfo = (upgrade) => {
   upgradeRowElement.appendChild(upgradeInfo);
 };
 
-
 // Function to remove the upgrade information when hover ends
 const removeUpgradeInfo = () => {
   const upgradeInfo = document.querySelector(".upgrade-info");
@@ -319,6 +386,132 @@ const removeUpgradeInfo = () => {
     upgradeInfo.remove();
   }
 };
+
+// Global function to calculate total buildings bought
+const totalBuildingsBought = () => {
+  if (!buildings || buildings.length === 0) {
+    return 0; // Return 0 if buildings array is undefined or empty
+  }
+  let total = 0;
+  buildings.forEach((building) => {
+    total += building.amount;
+  });
+  return total;
+};
+
+
+const stats = {
+  basicStats: {
+    allTimeBuds: 0,
+    allTimeClicks: 0,
+    currBudsPerClick: 1,
+  },
+  buildingStats: {
+    buildingsOwned: () =>
+      buildings.filter((building) => building.amount > 0).length,
+    mostPopularBuilding: () => {
+      const mostPopular = buildings.reduce((mostPopular, currentBuilding) => {
+        return currentBuilding.amount > mostPopular.amount
+          ? currentBuilding
+          : mostPopular;
+      }, buildings[0]);
+
+      return mostPopular.name;
+    },
+  },
+  upgradeStats: {
+    upgradesOwned: () => upgrades.filter((upgrade) => upgrade.owned).length,
+    bestUpgrade: "",
+  },
+  miscStats: {
+    totalPlaytime: 0,
+    totalBudsFromBuildings: 0,
+    budsFromClicks: 0,
+    /* totalBuildingsBought: function () {
+      console.log("Buildings array inside totalBuildingsBought:", buildings); // Log the buildings array
+      let total = 0;
+      buildings.forEach((building) => {
+        total += building.amount;
+      });
+      console.log("Total buildings bought:", total); // Log the calculated total
+      return total;
+    }, */
+
+    clicksPerSecond: 0,
+  },
+  funStats: {
+    totalBudsSmoked: 0,
+    timesStoned: "",
+    totalRevenueGenerated: () =>
+      "$" +
+      Math.floor((stats.basicStats.allTimeBuds / 80) * 250).toLocaleString(),
+  },
+};
+
+
+const statElements = {
+  allTimeBuds: document.getElementById("totalBuds"),
+  allTimeClicks: document.getElementById("totalClicks"),
+  currBudsPerSecond: document.getElementById("currentBps"),
+  currBudsPerClick: document.getElementById("currentBpc"),
+  buildingsOwned: document.getElementById("totalBuildingsOwned"),
+  mostPopularBuilding: document.getElementById("mostPopularBuilding"),
+  upgradesOwned: document.getElementById("totalUpgradesAcquired"),
+  bestUpgrade: document.getElementById("bestUpgrade"),
+  totalPlaytime: document.getElementById("totalPlaytime"),
+  totalBudsFromBuildings: document.getElementById("totalBudsFromBuildings"),
+  budsFromClicks: document.getElementById("budsByClicking"),
+  totalBuildingsBought: document.getElementById("totalBuildingsBought"),
+  clicksPerSecond: document.getElementById("clicksPerSecond"),
+  totalBudsSmoked: document.getElementById("totalBudsSmoked"),
+  timesStoned: document.getElementById("timesStoned"),
+  totalRevenueGenerated: document.getElementById("totalRevenueGenerated"),
+};
+
+const updateStats = () => {
+  statElements.allTimeBuds.textContent = Math.floor(
+    stats.basicStats.allTimeBuds
+  ).toLocaleString();
+  statElements.allTimeClicks.textContent = stats.basicStats.allTimeClicks;
+  statElements.currBudsPerSecond.textContent = budsPerSecond.toFixed(2);
+  statElements.currBudsPerClick.textContent = stats.basicStats.currBudsPerClick;
+  statElements.buildingsOwned.textContent =
+    stats.buildingStats.buildingsOwned();
+  statElements.mostPopularBuilding.textContent =
+    stats.buildingStats.mostPopularBuilding();
+  statElements.upgradesOwned.textContent = stats.upgradeStats.upgradesOwned();
+  statElements.bestUpgrade.textContent = stats.upgradeStats.bestUpgrade;
+  statElements.totalPlaytime.textContent = formatPlaytime(
+    stats.miscStats.totalPlaytime
+  );
+  statElements.totalBudsFromBuildings.textContent = Math.floor(
+    stats.miscStats.totalBudsFromBuildings
+  ).toLocaleString();
+  statElements.budsFromClicks.textContent = stats.miscStats.budsFromClicks;
+
+  // Update total buildings bought using the global function
+  statElements.totalBuildingsBought.textContent = totalBuildingsBought(); // Call the global function here
+
+  // Update clicks per second
+  statElements.clicksPerSecond.textContent = calculateClicksPerSecond();
+
+  statElements.totalBudsSmoked.textContent = Math.floor(
+    stats.funStats.totalBudsSmoked
+  ).toLocaleString();
+  statElements.timesStoned.textContent = stats.funStats.timesStoned;
+  statElements.totalRevenueGenerated.textContent =
+    stats.funStats.totalRevenueGenerated();
+};
+
+const statUpdateLoop = () => {
+  setInterval(() => {
+    updateStats();
+  }, 1000); // Update every second
+};
+
+// Start the stat update loop
+
+statUpdateLoop();
 
 const shopUpdateLoop = () => {
   setInterval(() => {
@@ -334,4 +527,5 @@ shopUpdateLoop();
 window.onload = () => {
   loadGame();
   bpsFunction(); // Start the buds-per-second function
+  playtimeFunction(); // Start tracking playtime
 };
