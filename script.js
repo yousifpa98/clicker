@@ -228,7 +228,6 @@ const buyUpgrade = (upgrade) => {
   }
 };
 
-
 // Function to calculate the total budsPerSecond from all buildings
 const calculateTotalBps = () => {
   budsPerSecond = buildings.reduce((totalBps, building) => {
@@ -403,12 +402,11 @@ const totalBuildingsBought = () => {
   return total;
 };
 
-
 const stats = {
   basicStats: {
     allTimeBuds: 0,
     allTimeClicks: 0,
-    currBudsPerClick: 1,
+    currBudsPerClick: budsPerClick,
   },
   buildingStats: {
     buildingsOwned: () =>
@@ -431,16 +429,6 @@ const stats = {
     totalPlaytime: 0,
     totalBudsFromBuildings: 0,
     budsFromClicks: 0,
-    /* totalBuildingsBought: function () {
-      console.log("Buildings array inside totalBuildingsBought:", buildings); // Log the buildings array
-      let total = 0;
-      buildings.forEach((building) => {
-        total += building.amount;
-      });
-      console.log("Total buildings bought:", total); // Log the calculated total
-      return total;
-    }, */
-
     clicksPerSecond: 0,
   },
   funStats: {
@@ -451,7 +439,6 @@ const stats = {
       Math.floor((stats.basicStats.allTimeBuds / 80) * 250).toLocaleString(),
   },
 };
-
 
 const statElements = {
   allTimeBuds: document.getElementById("totalBuds"),
