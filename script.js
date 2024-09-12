@@ -1,4 +1,4 @@
-const version = "0.1.4";
+const version = "0.1.5";
 const versionElements = document.querySelectorAll(".ver span");
 
 versionElements.forEach((element) => {
@@ -336,7 +336,7 @@ const populateBuildingShop = () => {
       buildingLeftDiv.classList.add("building-left");
 
       const img = document.createElement("img");
-      img.src = `./assets/img/${building.name.replace(/\s+/g, "")}.png`;
+      img.src = `./assets/img/${building.name.replace(/\s+/g, "")}.webp`;
       img.alt = building.name;
 
       const titleDiv = document.createElement("div");
@@ -443,7 +443,7 @@ const showUpgradeInfoMobile = (upgrade, upgradeDiv) => {
           <img src="./assets/img/${upgrade.name.replace(
             /\s+/g,
             ""
-          )}.png" alt="${upgrade.name}" />
+          )}.webp" alt="${upgrade.name}" />
           <div class="info-title-text">
             <h3>${upgrade.name}</h3>
             <div class="upgrade-tag">upgrade</div>
@@ -476,7 +476,7 @@ const populateUpgradeRow = () => {
         upgradeDiv.id = upgrade.name.replace(/\s+/g, "");
 
         const img = document.createElement("img");
-        img.src = `./assets/img/${upgrade.name.replace(/\s+/g, "")}.png`;
+        img.src = `./assets/img/${upgrade.name.replace(/\s+/g, "")}.webp`;
         img.alt = upgrade.name;
 
         upgradeDiv.appendChild(img);
@@ -538,7 +538,7 @@ const showUpgradeInfo = (upgrade, upgradeDiv) => {
   upgradeInfo.innerHTML = `
     <div class="info-title">
       <div class="info-title-left">
-        <img src="./assets/img/${upgrade.name.replace(/\s+/g, "")}.png" alt="${
+        <img src="./assets/img/${upgrade.name.replace(/\s+/g, "")}.webp" alt="${
     upgrade.name
   }" />
         <div class="info-title-text">

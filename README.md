@@ -84,6 +84,10 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ## Changelog
 
+### Version 0.1.5
+- Fixed mobile upgrade hover
+- Changed png to webp for performance
+
 ### Version 0.1.4
 - Fixed Mobile Music Menu
 - Added 7 new Buldings
