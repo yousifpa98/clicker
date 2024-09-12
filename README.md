@@ -84,6 +84,11 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ## Changelog
 
+### Version 0.1.4
+- Fixed Mobile Music Menu
+- Added 7 new Buldings
+- Added 7 new Upgrades
+
 ### Version 0.1.3
 - added 8 more tracks
    - music controls for track management
