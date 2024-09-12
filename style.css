@@ -39,6 +39,11 @@ main {
   align-items: center;
 } */
 
+
+.disable-dbl-tap-zoom {
+  touch-action: manipulation;
+}
+
 .desktop {
   display: none;
 }
