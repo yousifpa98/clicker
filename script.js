@@ -233,7 +233,6 @@ const getSelectedAmount = () => {
   return 1; // Default to 1 if none is selected
 };
 
-
 // Modify the buyBuilding function to handle multiples
 const buyBuilding = (building) => {
   let totalCost = 0;
@@ -385,7 +384,7 @@ const populateBuildingShop = () => {
 
 // Select all radio inputs and labels
 const radioInputs = document.querySelectorAll('input[name="amount"]');
-const labels = document.querySelectorAll('.amount label');
+const labels = document.querySelectorAll(".amount label");
 
 // Function to update the label styles based on the checked radio button
 const updateLabelStyles = () => {
@@ -399,12 +398,11 @@ const updateLabelStyles = () => {
   });
 
   // Update the building prices based on the selected amount
-  populateBuildingShop();  // Trigger the price update here
+  populateBuildingShop(); // Trigger the price update here
 };
 
 // Add event listeners to all radio inputs
 radioInputs.forEach((input) => {
-  
   // Use 'change' event to detect radio button selection
   input.addEventListener("change", updateLabelStyles);
 });
@@ -412,6 +410,47 @@ radioInputs.forEach((input) => {
 // Call the function once on load to ensure the correct label is bold initially
 updateLabelStyles();
 
+let upgradeTouched = null; // To store the upgrade currently in the "hover" state
+
+const showUpgradeInfoMobile = (upgrade, upgradeDiv) => {
+  if (upgradeTouched === upgradeDiv) {
+    // If the same upgrade is touched again, try to buy it
+    if (buds >= upgrade.cost) {
+      buyUpgrade(upgrade); // Buy if affordable
+      removeUpgradeInfo(); // Remove hover state after purchase
+    } else {
+      removeUpgradeInfo(); // Just remove hover state if can't afford
+    }
+    upgradeTouched = null; // Reset touched state
+  } else {
+    // If it's a new upgrade, show info and set it to the touched state
+    removeUpgradeInfo(); // Clear any existing hover state
+
+    const upgradeInfo = document.createElement("div");
+    upgradeInfo.classList.add("upgrade-info");
+
+    upgradeInfo.innerHTML = `
+      <div class="info-title">
+        <div class="info-title-left">
+          <img src="./assets/img/${upgrade.name.replace(
+            /\s+/g,
+            ""
+          )}.png" alt="${upgrade.name}" />
+          <div class="info-title-text">
+            <h3>${upgrade.name}</h3>
+            <div class="upgrade-tag">upgrade</div>
+          </div>
+        </div>
+        <p class="upgrade-cost"><span id="cost">${upgrade.cost.toLocaleString()}</span> B.</p>
+      </div>
+      <p id="upgrade-text">${upgrade.desc}</p>
+    `;
+
+    document.body.appendChild(upgradeInfo); // Append the info outside the upgrade row
+
+    upgradeTouched = upgradeDiv; // Set the current upgrade to the touched state
+  }
+};
 const populateUpgradeRow = () => {
   upgradeRowElement.innerHTML = ""; // Clear existing upgrades
 
@@ -444,16 +483,21 @@ const populateUpgradeRow = () => {
           upgradeDiv.style.filter = "none";
         }
 
-        // Click event is only active when affordable
-        upgradeDiv.addEventListener("click", () => {
-          if (buds >= upgrade.cost) {
-            buyUpgrade(upgrade);
-          }
-        });
+        // Handle touch for mobile devices
+        upgradeDiv.addEventListener(
+          "touchstart",
+          (e) => {
+            if (e.cancelable) {
+              e.preventDefault(); // Prevents double-tap zoom on mobile
+            }
+            showUpgradeInfoMobile(upgrade, upgradeDiv); // Show the upgrade info
+          },
+          { passive: false }
+        );
 
-        // Add hover event listeners for showing and removing upgrade info
+        // Handle mouse hover for desktop
         upgradeDiv.addEventListener("mouseover", () => {
-          showUpgradeInfo(upgrade);
+          showUpgradeInfo(upgrade); // Show the info always
         });
 
         upgradeDiv.addEventListener("mouseout", () => {
@@ -490,13 +534,22 @@ const showUpgradeInfo = (upgrade) => {
   upgradeRowElement.appendChild(upgradeInfo);
 };
 
-// Function to remove the upgrade information when hover ends
+// Function to remove the hover/upgrade info
 const removeUpgradeInfo = () => {
   const upgradeInfo = document.querySelector(".upgrade-info");
   if (upgradeInfo) {
-    upgradeInfo.remove();
+    upgradeInfo.remove(); // Remove the info element from the DOM
   }
+  upgradeTouched = null; // Reset the touched state
 };
+
+// Add event listener to close hover state when clicking outside the upgrade area
+document.addEventListener("click", (event) => {
+  // Check if the click is outside any upgrade element and close the hover state
+  if (!event.target.closest(".upgrade") && upgradeTouched !== null) {
+    removeUpgradeInfo(); // Remove hover state if clicking outside
+  }
+});
 
 // Global function to calculate total buildings bought
 const totalBuildingsBought = () => {

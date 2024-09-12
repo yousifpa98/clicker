@@ -497,6 +497,42 @@ header {
   font-size: 1.1rem;
 }
 
+.upgrade-tag {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 0.1rem 0.3rem;
+  background-color: green;
+  color: white;
+  border-radius: 5px;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+}
+
+.upgrade-info {
+  display: block;
+  position: absolute;
+  left: 50%;
+  top: 50vh;
+  background-color: grey;
+  padding: 0.5rem 2rem;
+  width: 90%;
+  max-width: 100%;
+  border: 1px solid black;
+  transform: translateX(-50%);
+}
+
+
+.upgrade-info img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border: 1px solid white;
+}
+
+
 /* Footer */
 
 footer {
@@ -520,10 +556,6 @@ footer p {
   justify-content: center;
   align-items: center;
   gap: 1rem;
-}
-
-.upgrade-info {
-  display: none;
 }
 
 #leaf-container {
