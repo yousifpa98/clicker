@@ -273,7 +273,7 @@ const upgrades = [
   {
     name: "Blunt Force Trauma",
     cost: 500000,
-    multiplier: 3,
+    multiplier: 10,
     effects: "budsPerClick",
     desc: "You’ve taken so many hits, now every click hits like a blunt.",
     owned: false,
@@ -283,7 +283,7 @@ const upgrades = [
   {
     name: "Stoned AF",
     cost: 1500000,
-    multiplier: 2.5,
+    multiplier: 4,
     effects: "budsPerClick",
     desc: "You’re so high that each click feels like a trip to the moon—and brings back double the buds.",
     owned: false,
