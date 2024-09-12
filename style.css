@@ -136,6 +136,24 @@ header {
   color: var(--secondary-color);
 }
 
+#volumeSlider {
+  width: 100px;
+  margin-left: 10px;
+}
+
+.mute-button {
+  background-color: transparent;
+  border: none;
+  color: var(--main-color);
+  font-size: 2rem;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.mute-button:hover {
+  color: var(--secondary-color);
+}
+
 
 .hamburger i {
   font-size: 2rem;

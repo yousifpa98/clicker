@@ -84,6 +84,11 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ## Changelog
 
+### Version 0.1.2
+- Added Background Music
+   - Music Controls
+- Link targeting fixed
+
 ### Version 0.1.1
 - 2 Factor Reset Check
 - Added multiple buy solution

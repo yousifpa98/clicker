@@ -25,15 +25,17 @@
       <nav class="navbar">
         <a href="" class="btn desktop resetGame">Reset Game</a>
 
-        <div class="nav-logo">
-          <img src="./assets/img/logo.svg" alt="Weed Clicker Logo" />
-        </div>
-        <!-- Mute/Unmute button -->
         <div class="music-control">
           <button id="muteButton" class="mute-button">
             <i class="fas fa-volume-up"></i>
           </button>
+          <input type="range" id="volumeSlider" min="0" max="100" value="50" />
         </div>
+
+        <div class="nav-logo">
+          <img src="./assets/img/logo.svg" alt="Weed Clicker Logo" />
+        </div>
+
         <div class="hamburger">
           <i class="fas fa-bars"></i>
         </div>

@@ -89,9 +89,19 @@ clickerElement.addEventListener("click", (e) => {
   createFloatingBuds(mouseX, mouseY, budsPerClick);
 });
 
-// Get the button and audio element
+// Get the button, audio element, and volume slider
 const muteButton = document.getElementById("muteButton");
 const audio = document.getElementById('background-music');
+const volumeSlider = document.getElementById("volumeSlider");
+
+// Set default volume
+const defaultVolume = 0.1;
+
+// Set the audio element volume to the default
+audio.volume = defaultVolume;
+
+// Set the slider value to reflect the default volume (from 0 to 100 scale)
+volumeSlider.value = defaultVolume * 100; // 50% => value = 50
 
 // Variable to track if audio is playing
 let isPlaying = false;
@@ -120,9 +130,21 @@ muteButton.addEventListener("click", function () {
   audio.muted = isMuted;
 
   // Update the button icon
-  if (isMuted) {
+  muteButton.innerHTML = isMuted
+    ? '<i class="fas fa-volume-mute"></i>'
+    : '<i class="fas fa-volume-up"></i>';
+});
+
+// Volume slider event listener to adjust volume
+volumeSlider.addEventListener("input", function () {
+  audio.volume = volumeSlider.value / 100;
+
+  // If the slider is set to 0, update the icon to mute, otherwise to volume up
+  if (volumeSlider.value == 0) {
     muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
   } else {
     muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+    isMuted = false; // If user moves the slider, unmute the audio
+    audio.muted = false;
   }
 });
