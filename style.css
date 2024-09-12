@@ -121,9 +121,15 @@ header {
   position: absolute;
   left: 10rem;
   top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
 }
 
-.mute-button {
+.mute-button,
+.music-control-button {
   background-color: transparent;
   border: none;
   color: var(--main-color);
@@ -132,7 +138,8 @@ header {
   transition: color 0.3s ease;
 }
 
-.mute-button:hover {
+.mute-button:hover,
+.music-control-button:hover {
   color: var(--secondary-color);
 }
 
@@ -153,7 +160,6 @@ header {
 .mute-button:hover {
   color: var(--secondary-color);
 }
-
 
 .hamburger i {
   font-size: 2rem;

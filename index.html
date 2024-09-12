@@ -17,19 +17,24 @@
   </head>
   <body>
     <audio id="background-music" loop>
-      <source src="./assets/audio/bg_beat.mp3" type="audio/mpeg" />
+      <source src="./assets/audio/track_1.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
 
     <header>
       <nav class="navbar">
         <a href="" class="btn desktop resetGame">Reset Game</a>
-
         <div class="music-control">
           <button id="muteButton" class="mute-button">
             <i class="fas fa-volume-up"></i>
           </button>
           <input type="range" id="volumeSlider" min="0" max="100" value="50" />
+          <button id="prevTrackButton" class="music-control-button">
+            <i class="fas fa-step-backward"></i>
+          </button>
+          <button id="nextTrackButton" class="music-control-button">
+            <i class="fas fa-step-forward"></i>
+          </button>
         </div>
 
         <div class="nav-logo">
@@ -232,9 +237,10 @@
     </div>
     <script src="./buildings.js"></script>
     <script src="./upgrades.js"></script>
+    <script src="./playlist.js"></script>
     <script src="./script.js"></script>
-    <!-- <script src="./stats.js"></script> -->
     <script src="./cosmetics.js"></script>
+    <script src="./music.js"></script>
     <!-- Reset Game Modal -->
   </body>
 </html>

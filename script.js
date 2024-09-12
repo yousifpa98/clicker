@@ -147,8 +147,8 @@ const saveGame = () => {
   localStorage.setItem("weedClickerSave", JSON.stringify(gameData));
 };
 
-// Save the game every 30 seconds
-setInterval(saveGame, 30000);
+// Save the game every 120 seconds
+setInterval(saveGame, 120000);
 
 const loadGame = () => {
   const savedGame = localStorage.getItem("weedClickerSave");
