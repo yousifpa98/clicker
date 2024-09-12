@@ -16,12 +16,23 @@
     <title>Weed Clicker</title>
   </head>
   <body>
+    <audio id="background-music" loop>
+      <source src="./assets/audio/bg_beat.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+
     <header>
       <nav class="navbar">
         <a href="" class="btn desktop resetGame">Reset Game</a>
 
         <div class="nav-logo">
           <img src="./assets/img/logo.svg" alt="Weed Clicker Logo" />
+        </div>
+        <!-- Mute/Unmute button -->
+        <div class="music-control">
+          <button id="muteButton" class="mute-button">
+            <i class="fas fa-volume-up"></i>
+          </button>
         </div>
         <div class="hamburger">
           <i class="fas fa-bars"></i>
@@ -93,7 +104,6 @@
                 <label for="hundredPer">100</label>
                 <input type="radio" name="amount" id="hundredPer" />
               </div>
-              
             </div>
             <div class="building-shop" id="building-shop"></div>
           </div>
@@ -199,7 +209,8 @@
     </main>
     <footer>
       <p>
-        &copy; 2024 <a target="_blank" href="https://www.yousifpaulus.dev">Yousif Paulus</a>
+        &copy; 2024
+        <a target="_blank" href="https://www.yousifpaulus.dev">Yousif Paulus</a>
       </p>
       <ul class="footer-socials">
         <li>

@@ -21,7 +21,7 @@ if (!leafContainer) {
     const leaf = document.createElement("div");
     leaf.classList.add("leaf");
     leaf.style.left = `${Math.random() * 100}vw`; // Random position
-    const fallDuration = /* Math.random() * 2 + 3 */15; // fixed fall duration between 3 to 5 seconds
+    const fallDuration = /* Math.random() * 2 + 3 */ 15; // fixed fall duration between 3 to 5 seconds
     leaf.style.animationDuration = `${fallDuration}s`;
 
     leafContainer.appendChild(leaf);
@@ -63,7 +63,9 @@ if (!leafContainer) {
 const createFloatingBuds = (x, y, budsPerClick) => {
   const floatingText = document.createElement("div");
   floatingText.classList.add("buds-animation");
-  floatingText.textContent = `+ ${budsPerClick} Bud${budsPerClick > 1 ? "s" : ""}`;
+  floatingText.textContent = `+ ${budsPerClick} Bud${
+    budsPerClick > 1 ? "s" : ""
+  }`;
 
   // Set the position of the floating text
   floatingText.style.left = `${x}px`;
@@ -85,4 +87,42 @@ clickerElement.addEventListener("click", (e) => {
 
   // Trigger the floating buds animation
   createFloatingBuds(mouseX, mouseY, budsPerClick);
+});
+
+// Get the button and audio element
+const muteButton = document.getElementById("muteButton");
+const audio = document.getElementById('background-music');
+
+// Variable to track if audio is playing
+let isPlaying = false;
+let isMuted = false; // Default state
+
+// Function to play music after user interaction
+const playMusicAfterInteraction = () => {
+  if (!isPlaying) {
+    audio.play()
+      .then(() => {
+        isPlaying = true;
+        console.log('Music started');
+      })
+      .catch(error => {
+        console.error('Music play failed:', error);
+      });
+  }
+};
+
+// Event listener for the first interaction (e.g., click)
+document.addEventListener('click', playMusicAfterInteraction, { once: true });
+
+// Mute/unmute button event listener
+muteButton.addEventListener("click", function () {
+  isMuted = !isMuted;
+  audio.muted = isMuted;
+
+  // Update the button icon
+  if (isMuted) {
+    muteButton.innerHTML = '<i class="fas fa-volume-mute"></i>';
+  } else {
+    muteButton.innerHTML = '<i class="fas fa-volume-up"></i>';
+  }
 });
