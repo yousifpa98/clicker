@@ -132,7 +132,6 @@ window.addEventListener("click", (event) => {
   }
 });
 
-
 const buildingShopElement = document.getElementById("building-shop");
 
 // Function to save the current game state to localStorage
@@ -214,22 +213,56 @@ const loadGame = () => {
   }
 };
 
-const updatePrice = (building) => {
-  building.cost = Math.floor(building.cost * 1.1);
+// Update price function to handle multiple buys
+const updatePrice = (building, amountBought) => {
+  building.cost = Math.floor(building.cost * Math.pow(1.1, amountBought));
 };
 
+// Function to get the selected amount
+const getSelectedAmount = () => {
+  const selectedInput = document.querySelector('input[name="amount"]:checked');
+  if (selectedInput) {
+    if (selectedInput.id === "onePer") {
+      return 1;
+    } else if (selectedInput.id === "tenPer") {
+      return 10;
+    } else if (selectedInput.id === "hundredPer") {
+      return 100;
+    }
+  }
+  return 1; // Default to 1 if none is selected
+};
+
+
+// Modify the buyBuilding function to handle multiples
 const buyBuilding = (building) => {
-  if (buds >= building.cost) {
-    buds -= building.cost;
-    budsPerSecond += building.bps;
+  let totalCost = 0;
+  let amountToBuy = 0;
+  const selectedAmount = getSelectedAmount(); // Get the currently selected amount
+
+  // Calculate the total cost for the selected amount
+  for (let i = 0; i < selectedAmount; i++) {
+    let currentCost = Math.floor(building.cost * Math.pow(1.1, i)); // Progressive cost increase for each additional building
+    if (buds >= totalCost + currentCost) {
+      totalCost += currentCost;
+      amountToBuy++;
+    } else {
+      break; // Stop if player can't afford the next building
+    }
+  }
+
+  // Check if player can afford at least one building
+  if (amountToBuy > 0) {
+    buds -= totalCost;
+    budsPerSecond += building.bps * amountToBuy;
     bpsElement.innerText = budsPerSecond.toFixed(2); // Update budsPerSecond with 2 decimal places
-    building.amount++;
-    stats.funStats.totalBudsSmoked += building.cost;
+    building.amount += amountToBuy;
+    stats.funStats.totalBudsSmoked += totalCost;
 
     document.getElementById(
       building.name.replace(/\s+/g, "") + "-inventory"
     ).innerText = building.amount;
-    updatePrice(building);
+    updatePrice(building, amountToBuy); // Update price after multiple purchases
     document.getElementById(
       building.name.replace(/\s+/g, "") + "-cost"
     ).innerText = building.cost.toLocaleString(); // Format cost with thousands separator
@@ -281,6 +314,8 @@ const upgradeRowElement = document.getElementById("upgrade-row");
 
 // Function to populate buildings based on showAt condition
 const populateBuildingShop = () => {
+  const selectedAmount = getSelectedAmount(); // Get the selected amount (1, 10, or 100)
+
   buildingShopElement.innerHTML = ""; // Clear the shop
 
   buildings.forEach((building) => {
@@ -289,8 +324,6 @@ const populateBuildingShop = () => {
 
       const buildingDiv = document.createElement("div");
       buildingDiv.classList.add("building");
-
-      buildingDiv.id = building.name.replace(/\s+/g, "");
 
       const buildingLeftDiv = document.createElement("div");
       buildingLeftDiv.classList.add("building-left");
@@ -307,7 +340,13 @@ const populateBuildingShop = () => {
 
       const pCost = document.createElement("p");
       pCost.id = building.name.replace(/\s+/g, "") + "-cost";
-      pCost.textContent = building.cost.toLocaleString(); // Format cost with thousands separator
+
+      // Calculate total cost for the selected amount (1, 10, or 100 buildings)
+      let totalCost = 0;
+      for (let i = 0; i < selectedAmount; i++) {
+        totalCost += Math.floor(building.cost * Math.pow(1.1, i));
+      }
+      pCost.textContent = totalCost.toLocaleString(); // Format total cost with thousands separator
 
       titleDiv.appendChild(h3);
       titleDiv.appendChild(pCost);
@@ -325,8 +364,8 @@ const populateBuildingShop = () => {
 
       buildingShopElement.appendChild(buildingDiv);
 
-      // Apply greyscale filter but allow hover
-      if (buds < building.cost) {
+      // Apply greyscale filter if the player can't afford the selected amount
+      if (buds < totalCost) {
         buildingDiv.classList.add("disabled");
         buildingDiv.style.filter = "grayscale(100%)";
       } else {
@@ -334,14 +373,44 @@ const populateBuildingShop = () => {
         buildingDiv.style.filter = "none";
       }
 
+      // Add the event listener to buy the building when clicked
       buildingDiv.addEventListener("click", () => {
-        if (buds >= building.cost) {
-          buyBuilding(building);
+        if (buds >= totalCost) {
+          buyBuilding(building); // Call buyBuilding with the selected amount
         }
       });
     }
   });
 };
+
+// Select all radio inputs and labels
+const radioInputs = document.querySelectorAll('input[name="amount"]');
+const labels = document.querySelectorAll('.amount label');
+
+// Function to update the label styles based on the checked radio button
+const updateLabelStyles = () => {
+  radioInputs.forEach((input, index) => {
+    const label = labels[index]; // Get the corresponding label
+    if (input.checked) {
+      label.style.fontWeight = "bold"; // Make the checked one bold
+    } else {
+      label.style.fontWeight = "normal"; // Reset the others to normal
+    }
+  });
+
+  // Update the building prices based on the selected amount
+  populateBuildingShop();  // Trigger the price update here
+};
+
+// Add event listeners to all radio inputs
+radioInputs.forEach((input) => {
+  
+  // Use 'change' event to detect radio button selection
+  input.addEventListener("change", updateLabelStyles);
+});
+
+// Call the function once on load to ensure the correct label is bold initially
+updateLabelStyles();
 
 const populateUpgradeRow = () => {
   upgradeRowElement.innerHTML = ""; // Clear existing upgrades
@@ -558,4 +627,5 @@ window.onload = () => {
   loadGame();
   bpsFunction(); // Start the buds-per-second function
   playtimeFunction(); // Start tracking playtime
+  updateLabelStyles(); // Update the label styles on load
 };

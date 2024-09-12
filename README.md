@@ -86,6 +86,7 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ### Version 0.1.1
 - 2 Factor Reset Check
+- Added multiple buy solution
 
 ### Version 0.1.0
 - Stats
