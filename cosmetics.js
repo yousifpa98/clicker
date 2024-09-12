@@ -89,3 +89,18 @@ clickerElement.addEventListener("click", (e) => {
   createFloatingBuds(mouseX, mouseY, budsPerClick);
 });
 
+const musicToggle = document.getElementById("music-toggle");
+const musicControl = document.querySelector(".music-control");
+const navLogo = document.querySelector(".nav-logo img");
+
+const toggleMusicMenu = () => {
+  if (musicControl.style.display === "flex") {
+    musicControl.style.display = "none";
+    navLogo.style.opacity = "1";
+  } else {
+    musicControl.style.display = "flex";
+    navLogo.style.opacity = "0";    
+  }
+};
+
+musicToggle.addEventListener("click", toggleMusicMenu);

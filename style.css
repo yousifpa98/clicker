@@ -124,13 +124,18 @@ header {
 
 .music-control {
   position: absolute;
-  left: 10rem;
-  top: 1rem;
-  display: flex;
+  left: 0;
+  top: 200%;
+  display: none;
   align-items: center;
   justify-content: center;
   gap: 1rem;
-
+  background-color: var(--primary-color);
+  padding: 0.5rem;
+  padding-bottom: 1rem;
+  padding-right: 2rem;
+  border-radius: 0 0 5px 5px;
+  z-index: 1001;
 }
 
 .mute-button,
@@ -164,6 +169,18 @@ header {
 
 .mute-button:hover {
   color: var(--secondary-color);
+}
+
+.hamburger {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+.musicButton {
+  position: absolute;
+  left: 1rem;
+  top: 1rem;
 }
 
 .hamburger i {
@@ -632,6 +649,20 @@ footer p {
     gap: 1rem;
     list-style-type: none;
   }
+
+  .music-control {
+    position: absolute;
+    left: 25%;
+    top: 93%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    background-color: var(--primary-color);
+    padding: 0.5rem;
+    border-radius: 0 0 5px 5px;
+  }
+  
 
   .nav-links-desktop li {
     text-transform: uppercase;
