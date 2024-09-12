@@ -143,6 +143,7 @@ const saveGame = () => {
     buildings: buildings,
     upgrades: upgrades,
     stats: stats, // Include totalPlaytime
+    isMuted: isMuted, // Save the isMuted state
   };
   localStorage.setItem("weedClickerSave", JSON.stringify(gameData));
 };
@@ -199,6 +200,13 @@ const loadGame = () => {
     stats.funStats.totalBudsSmoked =
       gameData.stats?.funStats?.totalBudsSmoked || 0;
     stats.funStats.timesStoned = gameData.stats?.funStats?.timesStoned || "";
+
+    // Restore isMuted state
+    isMuted = gameData.isMuted || false; // Default to false if not found
+    audio.muted = isMuted; // Apply the muted state to the audio element
+    muteButton.innerHTML = isMuted
+      ? '<i class="fas fa-volume-mute"></i>'
+      : '<i class="fas fa-volume-up"></i>';
 
     // Update the UI to reflect the loaded state
     budsElement.innerText = Math.floor(buds).toLocaleString(); // Format buds with thousands separator
