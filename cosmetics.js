@@ -96,11 +96,20 @@ const navLogo = document.querySelector(".nav-logo img");
 const toggleMusicMenu = () => {
   if (musicControl.style.display === "flex") {
     musicControl.style.display = "none";
-    navLogo.style.opacity = "1";
+    
+    // Only hide/show navLogo if screen width is less than 900px
+    if (window.innerWidth < 900) {
+      navLogo.style.opacity = "1";
+    }
   } else {
     musicControl.style.display = "flex";
-    navLogo.style.opacity = "0";    
+    
+    // Only hide/show navLogo if screen width is less than 900px
+    if (window.innerWidth < 900) {
+      navLogo.style.opacity = "0";
+    }
   }
 };
 
 musicToggle.addEventListener("click", toggleMusicMenu);
+

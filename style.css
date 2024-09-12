@@ -634,6 +634,10 @@ footer p {
     display: block;
   }
 
+  .musicButton {
+    left: 10rem;
+  }
+
   .navbar {
     justify-content: space-between;
   }
@@ -652,9 +656,9 @@ footer p {
 
   .music-control {
     position: absolute;
-    left: 25%;
-    top: 93%;
-    display: flex;
+    left: 10%;
+    top: 94%;
+    display: none;
     align-items: center;
     justify-content: center;
     gap: 1rem;
@@ -682,6 +686,11 @@ footer p {
   main {
     height: 100vh;
   }
+
+  .musicButton {
+    left: 13rem;
+  }
+
 
   #game {
     flex-direction: row;
