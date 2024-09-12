@@ -46,7 +46,7 @@ if (!leafContainer) {
       // Generate a reasonable number of leaves based on the bps, but cap it
       const leavesToGenerate = Math.min(
         maxLeaves,
-        Math.floor(Math.sqrt(budsPerSecond) / 10)
+        Math.floor(Math.sqrt(budsPerSecond) / 25)
       ); // Scaled by square root
 
       for (let i = 0; i < leavesToGenerate; i++) {
