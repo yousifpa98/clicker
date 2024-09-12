@@ -56,7 +56,7 @@ const upgrades = [
     effects: ["Hydroponic Bunker"],
     desc: "Boost production in the Hydroponic Bunkers.",
     owned: false,
-    showAt: () => buildings[5].amount >= 2,
+    showAt: () => buildings[6].amount >= 2,
     shown: false,
   },
   {
@@ -109,7 +109,6 @@ const upgrades = [
     showAt: () => buildings[10].amount >= 1,
     shown: false,
   },
-  // New Upgrades
   {
     name: "Cheech and Chong Endorsement",
     cost: 500000,
@@ -153,7 +152,7 @@ const upgrades = [
   {
     name: "Farm-to-Bong",
     cost: 800000,
-    multiplier: 1.2,
+    multiplier: 11,
     effects: ["Underground Garage"],
     desc: "Streamlined delivery system from farm to bong. People can't get enough.",
     owned: false,
@@ -187,7 +186,7 @@ const upgrades = [
     effects: ["Cannabis Greenhouse"],
     desc: "A nutrient mix that’s making your plants thrive like never before.",
     owned: false,
-    showAt: () => buildings[12].amount >= 2,
+    showAt: () => buildings[13].amount >= 2,
     shown: false,
   },
   {
@@ -197,7 +196,7 @@ const upgrades = [
     effects: ["Underground Cannabis Empire"],
     desc: "You know the right people, and now the black market is more profitable than ever.",
     owned: false,
-    showAt: () => buildings[17].amount >= 1,
+    showAt: () => buildings[20].amount >= 1,
     shown: false,
   },
   {
@@ -207,7 +206,7 @@ const upgrades = [
     effects: ["Weed Convention Center"],
     desc: "A feature in High Times magazine. Suddenly, you're the industry star.",
     owned: false,
-    showAt: () => buildings[13].amount >= 3,
+    showAt: () => buildings[12].amount >= 3,
     shown: false,
   },
   {
@@ -237,7 +236,7 @@ const upgrades = [
     effects: ["CBD Research Lab"],
     desc: "The CBD craze is real, and your lab is leading the way.",
     owned: false,
-    showAt: () => buildings[16].amount >= 3,
+    showAt: () => buildings[17].amount >= 3,
     shown: false,
   },
   {
@@ -354,11 +353,11 @@ const upgrades = [
   {
     name: "Bob Marley's Blessing",
     cost: 250000000,
-    multiplier: 5,
-    effects: ["All buildings"],
+    multiplier: 10,
+    effects: ["Weed Factory"],
     desc: "The legendary Bob Marley himself blesses your crops. Production goes sky-high.",
     owned: false,
-    showAt: () => buildings[0].amount >= 10,
+    showAt: () => buildings[3].amount >= 100,
     shown: false,
   },
   {
@@ -374,21 +373,21 @@ const upgrades = [
   {
     name: "420 Time Traveler",
     cost: 500000000,
-    multiplier: 6,
-    effects: ["All production"],
-    desc: "You’ve unlocked the secret to always living in the 4:20 moment, doubling your output.",
+    multiplier: 16,
+    effects: "budsPerClick",
+    desc: "You’ve unlocked the secret to always living in the 4:20 moment, 16x-ing your output.",
     owned: false,
-    showAt: () => stats.miscStats.totalPlaytime >= 42000,
+    showAt: () => stats.miscStats.totalPlaytime >= 42000000, // 42000000 ms = 700 minutes = 11 hours 40 minutes
     shown: false,
   },
   {
     name: "The Ultimate Stoner Kit",
     cost: 700000000,
     multiplier: 4,
-    effects: ["All buildings"],
+    effects: ["420 Mansion"],
     desc: "With rolling papers, grinders, bongs, and snacks in hand, you're prepared for the ultimate session—and your buildings are thriving.",
     owned: false,
-    showAt: () => buildings[0].amount >= 15,
+    showAt: () => buildings[24].amount >= 15,
     shown: false,
   },
 ];
