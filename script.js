@@ -451,8 +451,7 @@ const showUpgradeInfoMobile = (upgrade, upgradeDiv) => {
         </div>
         <p class="upgrade-cost"><span id="cost">${upgrade.cost.toLocaleString()}</span> B.</p>
       </div>
-      <p id="upgrade-text">${upgrade.desc}</p>
-    `;
+      <p id="upgrade-text">${upgrade.desc}</p>`;
 
     document.body.appendChild(upgradeInfo); // Append the info outside the upgrade row
 
@@ -483,6 +482,7 @@ const populateUpgradeRow = () => {
         upgradeDiv.appendChild(img);
         upgradeRowElement.appendChild(upgradeDiv);
 
+        // Disable/enable based on affordability
         if (buds < upgrade.cost) {
           upgradeDiv.classList.add("disabled");
           upgradeDiv.style.filter = "grayscale(100%)";
@@ -491,35 +491,47 @@ const populateUpgradeRow = () => {
           upgradeDiv.style.filter = "none";
         }
 
-        // Handle touch for mobile devices
-        upgradeDiv.addEventListener(
-          "touchstart",
-          (e) => {
-            if (e.cancelable) {
-              e.preventDefault(); // Prevents double-tap zoom on mobile
-            }
-            showUpgradeInfoMobile(upgrade, upgradeDiv); // Show the upgrade info
-          },
-          { passive: false }
-        );
+        // Add click listener to buy the upgrade
+        upgradeDiv.addEventListener("click", (e) => {
+          e.stopPropagation(); // Prevent event propagation
 
-        // Handle mouse hover for desktop
-        upgradeDiv.addEventListener("mouseover", () => {
-          showUpgradeInfo(upgrade); // Show the info always
+          if (buds >= upgrade.cost) {
+            buyUpgrade(upgrade); // Call buyUpgrade function
+            removeUpgradeInfo(); // Remove upgrade info after purchase
+          }
         });
 
-        upgradeDiv.addEventListener("mouseout", () => {
-          removeUpgradeInfo();
-        });
+        // Handle hover for desktop devices
+        if (!isTouchDevice()) {
+          upgradeDiv.addEventListener("mouseover", () => {
+            showUpgradeInfo(upgrade, upgradeDiv);
+          });
+
+          upgradeDiv.addEventListener("mouseout", () => {
+            removeUpgradeInfo();
+          });
+        } else {
+          // Handle touch/click for mobile devices
+          upgradeDiv.addEventListener("click", (e) => {
+            e.stopPropagation(); // Stop the event from bubbling up
+            showUpgradeInfoMobile(upgrade, upgradeDiv); // Show upgrade info for mobile
+          });
+        }
       }
     }
   });
 };
 
-// Function to show upgrade information on hover
-const showUpgradeInfo = (upgrade) => {
-  removeUpgradeInfo(); // Clear any existing info
+// Utility function to detect touch devices
+function isTouchDevice() {
+  return "ontouchstart" in window || navigator.maxTouchPoints > 0;
+}
 
+// Function to show upgrade information
+const showUpgradeInfo = (upgrade, upgradeDiv) => {
+  removeUpgradeInfo(); // Clear any existing upgrade info elements
+
+  // Create the upgrade info div
   const upgradeInfo = document.createElement("div");
   upgradeInfo.classList.add("upgrade-info");
 
@@ -534,12 +546,18 @@ const showUpgradeInfo = (upgrade) => {
           <div class="upgrade-tag">upgrade</div>
         </div>
       </div>
-      <p class="upgrade-cost"><span id="cost">${upgrade.cost.toLocaleString()}</span> B.</p> <!-- Format upgrade cost with thousands separator -->
+      <p class="upgrade-cost"><span id="cost">${upgrade.cost.toLocaleString()}</span> B.</p>
     </div>
     <p id="upgrade-text">${upgrade.desc}</p>
   `;
 
-  upgradeRowElement.appendChild(upgradeInfo);
+  // Append it to the closest container that controls the upgrades
+  upgradeDiv.parentElement.appendChild(upgradeInfo);
+
+  // Set the correct position based on the parent element's position
+  upgradeInfo.style.position = "absolute";
+  upgradeInfo.style.top = "50px"; // Adjust these values to place it correctly
+  upgradeInfo.style.left = "50px";
 };
 
 // Function to remove the hover/upgrade info
