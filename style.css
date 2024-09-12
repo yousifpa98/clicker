@@ -408,7 +408,7 @@ header {
 .title p::after {
   content: "";
   display: inline-block;
-  background-image: url(./assets/img/click_img.png);
+  background-image: url(./assets/img/click_img.webp);
   background-size: contain;
   background-repeat: no-repeat;
   height: 1rem;
@@ -574,7 +574,7 @@ footer p {
   position: absolute;
   width: 32px;
   height: 32px;
-  background-image: url("./assets/img/click_img.png");
+  background-image: url("./assets/img/click_img.webp");
   background-size: contain;
   background-repeat: no-repeat;
   animation: fall linear forwards, fadeOut 2s forwards;
