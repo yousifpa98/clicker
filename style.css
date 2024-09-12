@@ -153,7 +153,7 @@ header {
   color: var(--secondary-color);
 }
 
-#volumeSlider {
+.volumeSlider {
   width: 100px;
   margin-left: 10px;
 }
