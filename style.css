@@ -750,6 +750,7 @@ footer p {
     width: 450px;
     max-width: 450px;
     border: 1px solid black;
+    z-index: 1000;
   }
 
   .upgrade-info img {
