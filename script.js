@@ -551,13 +551,14 @@ const showUpgradeInfo = (upgrade, upgradeDiv) => {
     <p id="upgrade-text">${upgrade.desc}</p>
   `;
 
-  // Append it to the closest container that controls the upgrades
-  upgradeDiv.parentElement.appendChild(upgradeInfo);
+  const mainElement = document.querySelector('#game'); // Select the <main> element
+  mainElement.appendChild(upgradeInfo); // Append upgradeInfo to <main>
+  
 
   // Set the correct position based on the parent element's position
   upgradeInfo.style.position = "absolute";
-  upgradeInfo.style.top = "50px"; // Adjust these values to place it correctly
-  upgradeInfo.style.left = "50px";
+  upgradeInfo.style.top = "117px"; // Adjust these values to place it correctly
+  upgradeInfo.style.right = "10px";
 };
 
 // Function to remove the hover/upgrade info

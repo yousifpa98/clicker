@@ -280,7 +280,7 @@ header {
 
 .upgrade-row {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
@@ -292,8 +292,7 @@ header {
   background-color: var(--primary-color);
   box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.3);
   box-shadow: inset 0 0 10px 0 rgba(0, 0, 0, 0.3);
-  /* overflow-x: scroll; */
-  flex-wrap: wrap;
+  overflow-x: scroll;
 }
 
 .upgrade {
@@ -743,7 +742,7 @@ footer p {
   .upgrade-info {
     display: block;
     position: absolute;
-    left: calc(-120%);
+    right: 0 !important;
     top: 0;
     background-color: grey;
     padding: 0.5rem 2rem;
