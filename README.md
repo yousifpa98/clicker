@@ -84,6 +84,9 @@ Upgrades boost the efficiency of your buildings or provide general bonuses to bu
 
 ## Changelog
 
+### Version 0.1.6
+- Added a total of 36 achievements
+
 ### Version 0.1.5
 - Fixed mobile upgrade hover
 - Changed png to webp for performance

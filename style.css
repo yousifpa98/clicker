@@ -39,7 +39,6 @@ main {
   align-items: center;
 } */
 
-
 .disable-dbl-tap-zoom {
   touch-action: manipulation;
 }
@@ -524,14 +523,12 @@ header {
   pointer-events: none;
 }
 
-
 .upgrade-info img {
   width: 50px;
   height: 50px;
   object-fit: cover;
   border: 1px solid white;
 }
-
 
 /* Footer */
 
@@ -661,6 +658,88 @@ footer p {
   margin-left: 1rem;
 }
 
+/*  Achievement Modal styling */
+.achiv-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Darken the background */
+  align-items: center; /* Center the modal vertically */
+  justify-content: center; /* Center the modal horizontally */
+}
+
+.achiv-modal-content {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  max-width: 80%; /* Don't let it exceed the width */
+  max-height: 80vh; /* Don't let it exceed the viewport height */
+  overflow-y: auto; /* Scroll if content overflows */
+  position: relative; /* Required for close button */
+}
+
+.achiv-modal-close {
+  color: #aaa;
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.achiv-modal-close:hover,
+.achiv-modal-close:focus {
+  color: #000;
+}
+
+.achiv-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.achievement-item img {
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.achievement-item img:hover {
+  transform: scale(1.1); /* Slight hover effect */
+}
+
+/* Static achievement details section */
+.achiv-details {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#achivName {
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+#achivDesc {
+  font-size: 1em;
+  color: #666;
+}
+
+/* Modal positioning */
+.achiv-modal-content {
+  margin: 15% auto;
+  padding: 20px;
+  max-width: 600px;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
 @media screen and (min-width: 900px) {
   .desktop {
     display: block;
@@ -698,7 +777,6 @@ footer p {
     padding: 0.5rem;
     border-radius: 0 0 5px 5px;
   }
-  
 
   .nav-links-desktop li {
     text-transform: uppercase;
@@ -722,7 +800,6 @@ footer p {
   .musicButton {
     left: 13rem;
   }
-
 
   #game {
     flex-direction: row;
